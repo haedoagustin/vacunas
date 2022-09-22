@@ -8,8 +8,16 @@
 
 <script setup>
 useHead({
-  titleTemplate: '%s - Vacunas',
+  titleTemplate: (titleChunk) => {
+    return titleChunk ? `${titleChunk} - Vacunas` : 'Vacunas';
+  },
+  viewport: 'width=device-width, initial-scale=1, maximum-scale=5',
+  charset: 'utf-8',
+  meta: [
+    { name: 'description', content: 'Sitio para pruebas de Nuxt y Supabase' }
+  ],
   htmlAttrs: {
+    lang: 'es',
     class: "h-full bg-gray-50"
   },
   bodyAttrs: {
