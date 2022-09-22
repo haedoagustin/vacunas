@@ -1,6 +1,7 @@
 <script setup>
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { Bars3Icon, UserIcon, XMarkIcon } from '@heroicons/vue/24/outline/index.js'
+
 const route = useRoute()
 
 const current = (item) => route.matched[0].path === item.href;
@@ -28,14 +29,14 @@ const navigation = [
                 </div>
                 <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                     <div class="flex flex-shrink-0 items-center">
-                        <img src="assets/img/logo.svg" class="block h-8 w-auto lg:hidden" />
-                        <img src="assets/img/logo.svg" class="hidden h-8 w-auto lg:block" />
+                        <img src="/img/logo.svg" class="block h-8 w-auto lg:hidden" />
+                        <img src="/img/logo.svg" class="hidden h-8 w-auto lg:block" />
                     </div>
                     <div class="hidden sm:ml-6 sm:block">
                         <div class="flex space-x-4">
-                            <a v-for="item in navigation" :key="item.name" :href="item.href"
+                            <NuxtLink v-for="item in navigation" :key="item.name" :to="item.href"
                                 :class="[current(item) ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'px-3 py-2 rounded-md text-sm font-medium']"
-                                :aria-current="current(item) ? 'page' : undefined">{{ item.name }}</a>
+                                :aria-current="current(item) ? 'page' : undefined">{{ item.name }}</NuxtLink>
                         </div>
                     </div>
                 </div>
@@ -59,9 +60,9 @@ const navigation = [
                             <MenuItems
                                 class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                                 <MenuItem v-slot="{ active }">
-                                <router-link to="logout"
+                                <NuxtLink to="logout"
                                     :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">
-                                    Salir</router-link>
+                                    Salir</NuxtLink>
                                 </MenuItem>
                             </MenuItems>
                         </transition>
