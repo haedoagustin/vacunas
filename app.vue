@@ -1,11 +1,3 @@
-<template>
-  <div>
-    <NuxtLayout>
-      <NuxtPage />
-    </NuxtLayout>
-  </div>
-</template>
-
 <script setup>
 useHead({
   titleTemplate: (titleChunk) => {
@@ -14,7 +6,7 @@ useHead({
   viewport: 'width=device-width, initial-scale=1, maximum-scale=5',
   charset: 'utf-8',
   meta: [
-    { name: 'description', content: 'Sitio para pruebas de Nuxt y Supabase' }
+    { name: 'description', content: 'Sitio para la gestión de compras, distribución y administración de vacunas.' }
   ],
   htmlAttrs: {
     lang: 'es',
@@ -28,3 +20,11 @@ useHead({
   ]
 })
 </script>
+
+<template>
+  <div>
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
+  </div>
+</template>
