@@ -1,5 +1,5 @@
 <script setup>
-import { LockClosedIcon } from '@heroicons/vue/20/solid'
+import { LockClosedIcon } from '@heroicons/vue/20/solid/index.js'
 
 definePageMeta({
   middleware: ['guest'],
