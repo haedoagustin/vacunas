@@ -62,6 +62,7 @@ const loginWithEmail = async () => await login({ email: email.value, password: p
     <div class="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div class="w-full max-w-md space-y-8">
         <div>
+          <img class="mx-auto h-12 w-auto" src="/img/logo.svg" />
           <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">Iniciar sesión</h2>
         </div>
 
@@ -84,7 +85,7 @@ const loginWithEmail = async () => await login({ email: email.value, password: p
 
           <div>
             <button
-              class="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+              class="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 dark:bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
               <span class="absolute inset-y-0 left-0 flex items-center pl-3">
                 <LoadingSpin v-if="loading" class="animate-spin h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
                   aria-hidden="true" />
