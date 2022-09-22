@@ -32,7 +32,7 @@ const signUp = async () => {
     const { user, error } = await auth.signUp({
       email: email.value,
       password: password.value,
-    })
+    }, { redirectTo: redirectTo.value })
     if (user) alert('Consultá tu casilla de correo para obtener el link')
   } catch (error) {
     alert(error.error_description || error.message)
