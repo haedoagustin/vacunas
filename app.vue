@@ -16,7 +16,7 @@ useHead({
     class: "h-full"
   },
   link: [
-    { rel: 'icon', type: 'image/x-icon', href: 'assets/img/logo.svg' }
+    { rel: 'icon', type: 'image/x-icon', href: '/img/logo.svg' }
   ]
 })
 </script>

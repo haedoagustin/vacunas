@@ -28,8 +28,8 @@ const navigation = [
                 </div>
                 <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                     <div class="flex flex-shrink-0 items-center">
-                        <img src="assets/img/logo.svg" class="block h-8 w-auto lg:hidden" />
-                        <img src="assets/img/logo.svg" class="hidden h-8 w-auto lg:block" />
+                        <img src="/img/logo.svg" class="block h-8 w-auto lg:hidden" />
+                        <img src="/img/logo.svg" class="hidden h-8 w-auto lg:block" />
                     </div>
                     <div class="hidden sm:ml-6 sm:block">
                         <div class="flex space-x-4">
