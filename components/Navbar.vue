@@ -1,6 +1,6 @@
 <script setup>
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-import { Bars3Icon, UserIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { Bars3Icon, UserIcon, XMarkIcon } from '@heroicons/vue/24/outline/index.js'
 const route = useRoute()
 
 const current = (item) => route.matched[0].path === item.href;
