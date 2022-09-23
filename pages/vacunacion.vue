@@ -1,15 +1,11 @@
 <script lang="ts" setup>
-definePageMeta({
-    layout: false,
-})
-
 useHead({
     title: "Vacunación"
 })
 </script>
     
 <template>
-    <NuxtLayout name="default">
+    <NuxtLayout>
         <template #page-title> Vacunación </template>
     </NuxtLayout>
 </template>
