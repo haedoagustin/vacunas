@@ -1,7 +1,4 @@
 <script setup>
-definePageMeta({
-  layout: 'blank'
-})
 const user = useSupabaseUser()
 
 watch(user, () => {

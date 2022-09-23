@@ -1,8 +1,4 @@
 <script lang="ts" setup>
-definePageMeta({
-    layout: false,
-})
-
 useHead({
     title: "Distribución"
 })
@@ -10,7 +6,7 @@ useHead({
 </script>
     
 <template>
-    <NuxtLayout name="default">
+    <NuxtLayout>
         <template #page-title> Distribución </template>
     </NuxtLayout>
 </template>
