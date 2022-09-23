@@ -12,6 +12,14 @@ const navigation = [
     { name: 'Distribución', href: '/distribucion' },
     { name: 'Vacunación', href: '/vacunacion' },
 ]
+
+const { auth } = useSupabaseClient()
+
+const logout = async () => {
+    await auth.signOut().then(() => {
+        navigateTo('/login')
+    })
+}
 </script>
 
 <template>
@@ -60,9 +68,9 @@ const navigation = [
                             <MenuItems
                                 class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                                 <MenuItem v-slot="{ active }">
-                                <NuxtLink to="logout"
-                                    :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">
-                                    Salir</NuxtLink>
+                                <button @click="logout"
+                                    :class="[active ? 'bg-gray-100' : '', 'w-full block px-4 py-2 text-sm text-gray-700']">
+                                    Salir</button>
                                 </MenuItem>
                             </MenuItems>
                         </transition>

@@ -1,6 +1,5 @@
 <script setup>
 definePageMeta({
-  middleware: ['guest'],
   layout: 'blank'
 })
 const user = useSupabaseUser()

@@ -1,13 +1,11 @@
 <script lang="ts" setup>
 definePageMeta({
-    middleware: ['auth'],
     layout: false,
 })
 
 useHead({
     title: "Vacunación"
 })
-
 </script>
     
 <template>

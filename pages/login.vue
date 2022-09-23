@@ -2,7 +2,6 @@
 import { LockClosedIcon } from '@heroicons/vue/20/solid/index.js'
 
 definePageMeta({
-  middleware: ['guest'],
   layout: 'blank',
 })
 
@@ -13,7 +12,7 @@ useHead({
 const user = useSupabaseUser();
 const { auth } = useSupabaseClient()
 
-watchEffect(() => {
+watch(user, () => {
   if (user.value) {
     navigateTo('/')
   }
