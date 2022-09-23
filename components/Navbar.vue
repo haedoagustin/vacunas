@@ -11,6 +11,7 @@ const navigation = [
     { name: 'Compras', href: '/compras' },
     { name: 'Distribución', href: '/distribucion' },
     { name: 'Vacunación', href: '/vacunacion' },
+    { name: 'Calendario', href: '/calendario' },
 ]
 
 const { auth } = useSupabaseClient()
