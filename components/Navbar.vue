@@ -26,6 +26,7 @@ const navigation = [
   { name: "Calendario", href: "/calendario" },
   { name: "Vacunas", href: "/vacunas" },
   { name: "Vacunas desarrolladas", href: "/vacunas-desarrolladas" },
+  { name: "Laboratorios", href: "/laboratorios" },
 ];
 
 const { auth } = useSupabaseClient();

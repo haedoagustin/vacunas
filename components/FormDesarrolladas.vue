@@ -1,0 +1,161 @@
+<script setup>
+const supabase = useSupabaseClient();
+
+let vacunas = ref([]);
+let laboratorios = ref([]);
+
+const vacunaDesarrollada = {
+  idVacuna: ref(-1),
+  idLaboratorio: ref(""),
+  precio: ref(0),
+  vidaUtil: ref(0),
+  tiempoEntrega: ref(0),
+};
+
+const loadVacunas = async () => {
+  try {
+    let { data } = await supabase.from("vacunas").select("*");
+    vacunas.value = data;
+    console.log(data);
+  } catch (err) {
+    console.log("Algo salio mal cargando las vacunas: ", err);
+  }
+};
+
+const loadLaboratorios = async () => {
+  try {
+    let { data } = await supabase.from("laboratorios").select("*");
+    laboratorios.value = data;
+    console.log(data);
+  } catch (err) {
+    console.log("Algo salio mal cargando las laboratorios: ", err);
+  }
+};
+
+const submitVacuna = async () => {
+  const row = {};
+
+  const lab = laboratorios.value.find(
+    (lab) => (lab.nombre = vacunaDesarrollada.idLaboratorio.value)
+  );
+  const vac = vacunas.value.find(
+    (vac) => (vac.nombre = vacunaDesarrollada.idVacuna.value)
+  );
+
+  row.vacuna_id = vac.id;
+  row.laboratorio_id = lab.id;
+  row.precio = vacunaDesarrollada.precio.value;
+  row.vida_util = vacunaDesarrollada.vidaUtil.value;
+  row.tiempo_entrega = vacunaDesarrollada.tiempoEntrega.value;
+
+  console.log(row);
+  try {
+    const { data, error } = await supabase
+      .from("vacunas_desarrolladas")
+      .insert(row, { returning: "minimal" });
+
+    console.log(error);
+  } catch (err) {
+    console.log("Algo salio mal creando una vacuna:", err);
+  }
+};
+
+loadVacunas();
+loadLaboratorios();
+</script>
+
+<template>
+  <div class="w-full max-w-xs">
+    <form
+      class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+      @submit="submitVacuna"
+    >
+      <div class="mb-4 shadow-md">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="vacuna">
+          Vacuna
+        </label>
+        <select
+          class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          type="text"
+          placeholder="vacuna"
+          id="vacuna"
+          required
+          v-model="vacunaDesarrollada.idVacuna.value"
+        >
+          <option v-for="vacuna in vacunas">
+            {{ vacuna.nombre }}
+          </option>
+        </select>
+      </div>
+      <div class="mb-4 shadow-md">
+        <label
+          class="block text-gray-700 text-sm font-bold mb-2"
+          for="laboratorio"
+        >
+          Laboratorio
+        </label>
+        <select
+          class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          type="text"
+          placeholder="laboratorio"
+          id="laboratorio"
+          required
+          v-model="vacunaDesarrollada.idLaboratorio.value"
+        >
+          <option v-for="laboratorio in laboratorios">
+            {{ laboratorio.nombre }}
+          </option>
+        </select>
+      </div>
+      <div class="mb-4 shadow-md">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="precio">
+          Precio
+        </label>
+        <input
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          type="number"
+          id="precio"
+          placeholder="precio"
+          required
+          v-model="vacunaDesarrollada.precio.value"
+        />
+      </div>
+      <div class="mb-4 shadow-md">
+        <label
+          class="block text-gray-700 text-sm font-bold mb-2"
+          for="vida-util"
+        >
+          Vida util (Dias)
+        </label>
+        <input
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          type="number"
+          id="vida-util"
+          placeholder="vida util"
+          required
+          v-model="vacunaDesarrollada.vidaUtil.value"
+        />
+      </div>
+      <div class="mb-4 shadow-md">
+        <label
+          class="block text-gray-700 text-sm font-bold mb-2"
+          for="tiempo-entrega"
+        >
+          Tiempo de entrega (Dias)
+        </label>
+        <input
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          type="number"
+          id="tiempo-entrega"
+          placeholder="tiempo de entrega"
+          required
+          v-model="vacunaDesarrollada.tiempoEntrega.value"
+        />
+      </div>
+      <input
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+        type="submit"
+      />
+    </form>
+  </div>
+</template>
