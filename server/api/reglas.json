@@ -1,0 +1,160 @@
+{
+    // Para todas las reglas una regla 
+    // puede ser no tiene la dosis que está siendo aplicada
+    
+    // TUD = Tiempo desde la última dosis
+    
+    ID_HB_HEPATITIS_B : { 
+        DOSIS_1 : {
+            reglas : [
+                "EDAD < 12 horas | EDAD > 11 años"
+            ]
+        },
+        DOSIS_2 : {
+            reglas : [
+                "EDAD > 11 años | Personal de salud",
+                "Fecha desde la última aplicación > a 1 mes"
+            ]
+        },
+        DOSIS_3 : {
+            reglas : [
+                "EDAD > 11 años | Personal de salud",
+                "TUD > a 6 meses"
+            ]
+        },
+    },
+    ID_1_BCG : {
+        DOSIS_1 : {
+            reglas : [
+                "No salió de la maternidad",
+            ]
+        },
+    },
+    ID_2_ROTAVIRUS : {
+        DOSIS_1 : {
+            reglas : [
+                "2 meses > EDAD < 14 semanas y 6 días",
+            ]
+        },
+        DOSIS_2 : {
+            reglas : [
+                "4 meses > EDAD < 6 meses",
+            ]
+        },
+    },
+    ID_3_NEUMOCOCO_CONJUGADA : {
+        DOSIS_1 : {
+            reglas : [
+                "EDAD > 2 meses",
+            ]
+        },
+        DOSIS_2 : {
+            reglas : [
+                "EDAD > 6 meses",
+                "TUD > 2 meses"
+            ]
+        },
+        REFUERZO : {
+            reglas : [
+                "EDAD > 12 meses",
+                "TUD > 8 meses"
+            ]
+        }
+    },
+    ID_4_QUINTUPLE_PTV : {
+        DOSIS_1 : {
+            reglas : [
+                "EDAD > 2 meses",
+            ]
+        },
+        DOSIS_2 : {
+            reglas : [
+                "EDAD > 6 meses",
+                "TUD > 2 meses"
+            ]
+        },
+        DOSIS_3 : {
+            reglas : [
+                "EDAD > 6 meses",
+                "TUD > 2 meses"
+            ]
+        },
+        REFUERZO : {
+            reglas : [
+                "15 meses > EDAD < 18 meses"
+            ]
+        }
+    },
+    ID_5_SALK_IPV : {
+        DOSIS_1 : {
+            reglas : [
+                "EDAD > 2 meses",
+            ]
+        },
+        DOSIS_2 : {
+            reglas : [
+                "EDAD > 6 meses",
+                "TUD > 2 meses"
+            ]
+        },
+        DOSIS_3 : {
+            reglas : [
+                "EDAD > 6 meses",
+                "TUD > 2 meses"
+            ]
+        },
+        REFUERZO : {
+            reglas : [
+                "5 años > EDAD < 6 años",
+                "TUD > 5 años"
+            ]
+        }
+    },
+    ID_6_MENINGOCOCICA_CONJUGADA : {
+        DOSIS_1 : {
+            reglas : [
+                "EDAD > 3 meses",
+            ]
+        },
+        DOSIS_2 : {
+            reglas : [
+                "5 meses > EDAD < 11 años",
+                "TUD > 2 meses"
+            ]
+        },
+        REFUERZO : {
+            reglas : [
+                "15 meses > EDAD < 11 años",
+                "TUD > 10 meses"
+            ]
+        },
+    },
+    ID_7_TRIPLE_VIRAL_SRP : {
+        DOSIS_1 : {
+            reglas : [
+                "EDAD > 12 meses"
+            ] OR [
+                "EDAD > 11 años",
+                ["ID_7_TRIPLE_VIRAL_SRP:DOSIS_1", "ID_7_TRIPLE_VIRAL_SRP:DOSIS_2"]
+                OR ["ID_7_TRIPLE_VIRAL_SRP:DOSIS_1", "ID_12_DOBLE_VIRAL_SR:DOSIS_1"]
+            ]
+        },
+        DOSIS_2 : {
+            reglas : [
+                "EDAD > 5 años",
+                "TUD > 4 años"
+            ]
+        },
+        REFUERZO : {
+            reglas : [
+                "15 meses > EDAD < 11 años",
+                "TUD > 10 meses"
+            ]
+        }
+    },
+
+    // No aplica el dato de personal de salud y embarazadas
+    ANUALES: {
+        
+    }
+}
