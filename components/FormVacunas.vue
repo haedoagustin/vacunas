@@ -1,10 +1,5 @@
 <script setup>
-import { createClient } from "@supabase/supabase-js";
-
-const supabaseUrl = "https://hfzomrxjxddjafsvhspi.supabase.co";
-const supabaseKey =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhmem9tcnhqeGRkamFmc3Zoc3BpIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY2Mzc5OTM5OCwiZXhwIjoxOTc5Mzc1Mzk4fQ.ikpvI6YD26-4oY6M1YmC9dPugawIA3ls6pZJrbF0aV0";
-const supabase = createClient(supabaseUrl, supabaseKey);
+const client = useSupabaseClient()
 
 const vacuna = {
   nombre: ref(""),
@@ -38,7 +33,7 @@ const submitVacuna = async () => {
 
   console.log(row);
   try {
-    const { data, error } = await supabase
+    const { data, error } = await client
       .from("vacunas")
       .insert(row, { returning: "minimal" });
   } catch (err) {
