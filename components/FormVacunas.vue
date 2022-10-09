@@ -1,5 +1,6 @@
 <script setup>
-const supabase = useSupabaseClient();
+const client = useSupabaseClient();
+
 const vacuna = {
   nombre: ref(""),
   tipo: ref(""),
@@ -32,7 +33,7 @@ const submitVacuna = async () => {
 
   console.log(row);
   try {
-    const { data, error } = await supabase
+    const { data, error } = await client
       .from("vacunas")
       .insert(row, { returning: "minimal" });
   } catch (err) {
