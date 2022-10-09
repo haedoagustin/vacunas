@@ -44,7 +44,7 @@ const loadVacuna = async (id) => {
       .eq("id", id);
     return data[0].nombre;
   } catch (err) {
-    console.log("Algo salio mal eliminando la vacuna: ", err);
+    console.log("Algo salio mal cargando la vacuna: ", err);
   }
 };
 const loadLaboratorio = async (id) => {
@@ -55,7 +55,7 @@ const loadLaboratorio = async (id) => {
       .eq("id", id);
     return data[0].nombre;
   } catch (err) {
-    console.log("Algo salio mal eliminando la vacuna: ", err);
+    console.log("Algo salio mal cargando el laboratorio: ", err);
   }
 };
 
