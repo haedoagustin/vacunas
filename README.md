@@ -16,6 +16,11 @@ npm install
 # pnpm
 pnpm install --shamefully-hoist
 ```
+## Supabase local development
+
+Documentation
+
+https://supabase.com/docs/guides/cli/local-development
 
 ## Development Server
 
@@ -23,6 +28,18 @@ Start the development server on http://localhost:3000
 
 ```bash
 npm run dev
+```
+
+Apply unapplied migrations to local database
+
+```bash
+supabase db diff -f <nombre>
+```
+
+Make migrations from local database
+
+```bash
+supabase db diff -f <nombre>
 ```
 
 ## Production
