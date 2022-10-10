@@ -1,5 +1,6 @@
 <script setup>
-const supabase = useSupabaseClient();
+import { getDocs } from "../assets/crud";
+const client = useSupabaseClient();
 
 let vacunas = ref([]);
 let laboratorios = ref([]);
@@ -12,34 +13,22 @@ const vacunaDesarrollada = {
   tiempoEntrega: ref(0),
 };
 
-const loadVacunas = async () => {
-  try {
-    let { data } = await supabase.from("vacunas").select("*");
-    vacunas.value = data;
-    console.log(data);
-  } catch (err) {
-    console.log("Algo salio mal cargando las vacunas: ", err);
-  }
-};
+const load = async () => {
+  const dataVacunas = await getDocs(client, "vacunas");
+  const dataLab = await getDocs(client, "laboratorios");
 
-const loadLaboratorios = async () => {
-  try {
-    let { data } = await supabase.from("laboratorios").select("*");
-    laboratorios.value = data;
-    console.log(data);
-  } catch (err) {
-    console.log("Algo salio mal cargando las laboratorios: ", err);
-  }
+  vacunas.value = dataVacunas.data;
+  laboratorios.value = dataLab.data;
 };
 
 const submitVacuna = async () => {
   const row = {};
 
   const lab = laboratorios.value.find(
-    (lab) => (lab.nombre = vacunaDesarrollada.idLaboratorio.value)
+    (lab) => lab.nombre == vacunaDesarrollada.idLaboratorio.value
   );
   const vac = vacunas.value.find(
-    (vac) => (vac.nombre = vacunaDesarrollada.idVacuna.value)
+    (vac) => vac.nombre == vacunaDesarrollada.idVacuna.value
   );
 
   row.vacuna_id = vac.id;
@@ -50,7 +39,7 @@ const submitVacuna = async () => {
 
   console.log(row);
   try {
-    const { data, error } = await supabase
+    const { data, error } = await client
       .from("vacunas_desarrolladas")
       .insert(row, { returning: "minimal" });
 
@@ -60,8 +49,7 @@ const submitVacuna = async () => {
   }
 };
 
-loadVacunas();
-loadLaboratorios();
+load();
 </script>
 
 <template>

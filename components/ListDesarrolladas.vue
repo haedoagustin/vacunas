@@ -1,26 +1,8 @@
 <script setup>
-const supabase = useSupabaseClient();
+import { getDocs, getVacunasDesarrolladas } from "../assets/crud";
+const client = useSupabaseClient();
 
 let vacunas = ref([]);
-const loadVacunasDesarrolladas = async () => {
-  try {
-    let { data } = await supabase.from("vacunas_desarrolladas").select("*");
-
-    data = await Promise.all(
-      data.map(async (vacDesarrollada) => {
-        vacDesarrollada.laboratorio_id = await loadLaboratorio(
-          vacDesarrollada.laboratorio_id
-        );
-        vacDesarrollada.vacuna_id = await loadVacuna(vacDesarrollada.vacuna_id);
-        return vacDesarrollada;
-      })
-    );
-    vacunas.value = data;
-    console.log(data);
-  } catch (err) {
-    console.log("Algo salio mal cargando las vacunas: ", err);
-  }
-};
 
 const deleteVacuna = async (id) => {
   try {
@@ -36,30 +18,9 @@ const deleteVacuna = async (id) => {
   }
 };
 
-const loadVacuna = async (id) => {
-  try {
-    const { data, error } = await supabase
-      .from("vacunas")
-      .select("*")
-      .eq("id", id);
-    return data[0].nombre;
-  } catch (err) {
-    console.log("Algo salio mal cargando la vacuna: ", err);
-  }
-};
-const loadLaboratorio = async (id) => {
-  try {
-    const { data, error } = await supabase
-      .from("laboratorios")
-      .select("*")
-      .eq("id", id);
-    return data[0].nombre;
-  } catch (err) {
-    console.log("Algo salio mal cargando el laboratorio: ", err);
-  }
-};
-
-loadVacunasDesarrolladas();
+(async () => {
+  vacunas.value = await getVacunasDesarrolladas(client);
+})();
 </script>
 
 <template>

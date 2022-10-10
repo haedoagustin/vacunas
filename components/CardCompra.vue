@@ -1,5 +1,6 @@
 <script setup>
-const props = defineProps(["lab", "precio", "tiempo", "vacuna"]);
+import { getDocs } from "../assets/crud";
+const props = defineProps(["vacuna"]);
 const client = useSupabaseClient();
 const user = useSupabaseUser();
 
@@ -7,9 +8,14 @@ const cantidad = ref(0);
 const realizarCompra = async (e) => {
   const row = {};
   const date = new Date();
-  date.setDate(date.getDate() + props.tiempo);
+  date.setDate(date.getDate() + props.vacuna.tiempo_entrega);
 
-  row.usuario_id = await getUserId();
+  const usuarios = await getDocs(client, "usuarios", {
+    column: "auth_user_id",
+    value: user.value.id,
+  });
+
+  row.usuario_id = usuarios.data[0].id;
   row.fecha_entrega = date;
   row.estado = "pendiente";
 
@@ -24,23 +30,9 @@ const realizarCompra = async (e) => {
   try {
     const { data, error } = await client.from("compras").insert(row);
     rowLote.compra_id = data[0].id;
-
-    const lot = await client.from("lotes").insert(rowLote);
-    console.log(lot);
+    await client.from("lotes").insert(rowLote);
   } catch (err) {
     console.log("Algo salio mal realizando la compra:", err);
-  }
-};
-
-const getUserId = async () => {
-  try {
-    let { data } = await client
-      .from("usuarios")
-      .select("*")
-      .eq("auth_user_id", user.value.id);
-    return data[0].id;
-  } catch (err) {
-    console.log("Algo salio mal cargando la id del usuario: ", err);
   }
 };
 </script>
@@ -53,14 +45,14 @@ const getUserId = async () => {
       <h5
         class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
       >
-        Desarrollador: {{ props.lab }}
+        Desarrollador: {{ props.vacuna.laboratorio_id }}
       </h5>
     </a>
     <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-      Precio: {{ props.precio }}
+      Precio: {{ props.vacuna.precio }}
     </p>
     <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-      Tiempo de entrega: {{ props.tiempo }} (Dias)
+      Tiempo de entrega: {{ props.vacuna.tiempo_entrega }} (Dias)
     </p>
     <div class="mb-4 shadow-md">
       <label class="block text-gray-700 text-sm font-bold mb-2" for="cant">
@@ -83,7 +75,7 @@ const getUserId = async () => {
       Comprar
     </a>
     <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-      Total: {{ cantidad * props.precio }}
+      Total: {{ cantidad * props.vacuna.precio }}
     </p>
   </div>
 </template>

@@ -1,71 +1,30 @@
 <script lang="ts" setup>
+import { getDocs, getVacunasDesarrolladas } from "../assets/crud";
 import CardCompra from "../components/CardCompra.vue";
+import CardCompraPendiente from "../components/CardCompraPendiente.vue";
 
 useHead({
   title: "Compras",
 });
 
-const supabase = useSupabaseClient();
+const client = useSupabaseClient();
 
 let vacunas = ref([]);
 let vacunasDesarrolladas = ref([]);
+let compras = ref([]);
+
 let vacunaSelect = ref("");
 let tipoCompra = ref("");
 
-const loadVacunasDesarrolladas = async () => {
-  try {
-    let { data } = await supabase.from("vacunas_desarrolladas").select("*");
+(async () => {
+  vacunasDesarrolladas.value = await getVacunasDesarrolladas(client);
+  vacunas.value = (await getDocs(client, "vacunas")).data;
+  compras.value = (await getDocs(client, "compras")).data;
+})();
 
-    data = await Promise.all(
-      data.map(async (vacDesarrollada) => {
-        vacDesarrollada.laboratorio_id = await loadLaboratorio(
-          vacDesarrollada.laboratorio_id
-        );
-        vacDesarrollada.vacuna_id = await loadVacuna(vacDesarrollada.vacuna_id);
-        return vacDesarrollada;
-      })
-    );
-    vacunasDesarrolladas.value = data;
-    console.log(data);
-  } catch (err) {
-    console.log("Algo salio mal cargando las vacunas: ", err);
-  }
+const show = () => {
+  console.log("hola");
 };
-
-const loadVacunas = async () => {
-  try {
-    const { data, error } = await supabase.from("vacunas").select("*");
-    vacunas.value = data;
-  } catch (err) {
-    console.log("Algo salio mal cargando la vacuna: ", err);
-  }
-};
-
-const loadVacuna = async (id) => {
-  try {
-    const { data, error } = await supabase
-      .from("vacunas")
-      .select("*")
-      .eq("id", id);
-    return data[0].nombre;
-  } catch (err) {
-    console.log("Algo salio mal cargando la vacuna: ", err);
-  }
-};
-const loadLaboratorio = async (id) => {
-  try {
-    const { data, error } = await supabase
-      .from("laboratorios")
-      .select("*")
-      .eq("id", id);
-    return data[0].nombre;
-  } catch (err) {
-    console.log("Algo salio mal cargando el laboratorio: ", err);
-  }
-};
-
-loadVacunasDesarrolladas();
-loadVacunas();
 </script>
 
 <template>
@@ -83,11 +42,12 @@ loadVacunas();
       placeholder="tipo"
       required
       v-model="tipoCompra"
+      @change="show"
     >
-      <option>Comprar</option>
-      <option>Pendientes</option>
-      <option>Pagadas</option>
-      <option>Entregadas</option>
+      <option value="Comprar">Comprar</option>
+      <option value="pendiente">Pendientes</option>
+      <option value="pagada">Pagadas</option>
+      <option value="entregada">Entregadas</option>
     </select>
   </div>
   <div class="mb-4 shadow-md">
@@ -111,13 +71,14 @@ loadVacunas();
         (vac) => vac.vacuna_id == vacunaSelect
       )"
       :key="vacuna.id"
-      :lab="vacuna.laboratorio_id"
-      :precio="vacuna.precio"
-      :tiempo="vacuna.tiempo_entrega"
       :vacuna="vacuna"
     ></CardCompra>
   </div>
   <div v-if="tipoCompra != 'Comprar'">
-    <p>aca van las compras pendientes y pagadas</p>
+    <CardCompraPendiente
+      v-for="compra in compras.filter((compra) => compra.estado == tipoCompra)"
+      :key="compra.id"
+      :compra="compra"
+    ></CardCompraPendiente>
   </div>
 </template>
