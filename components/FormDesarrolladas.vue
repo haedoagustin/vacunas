@@ -43,6 +43,9 @@ const submitVacuna = async () => {
       .from("vacunas_desarrolladas")
       .insert(row, { returning: "minimal" });
 
+    // si la vacuna se creo correctamente cerramos el formulario
+    $emit("submit-vacuna");
+
     console.log(error);
   } catch (err) {
     console.log("Algo salio mal creando una vacuna:", err);
@@ -53,9 +56,9 @@ load();
 </script>
 
 <template>
-  <div class="w-full max-w-xs">
+  <div class="w-full">
     <form
-      class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+      class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full"
       @submit="submitVacuna"
     >
       <div class="mb-4 shadow-md">

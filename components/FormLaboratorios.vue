@@ -7,6 +7,9 @@ const submitLaboratorio = async () => {
     const { data, error } = await supabase
       .from("laboratorios")
       .insert({ nombre: nombre.value }, { returning: "minimal" });
+
+    // si el laboratorio se creo correctamente cerramos el formulario
+    $emit("submit-laboratorio");
   } catch (err) {
     console.log("Algo salio mal creando el laboratorio:", err);
   }
@@ -14,7 +17,7 @@ const submitLaboratorio = async () => {
 </script>
 
 <template>
-  <div class="w-full max-w-xs">
+  <div class="w-full">
     <form
       class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
       @submit="submitLaboratorio"
