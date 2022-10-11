@@ -44,11 +44,6 @@ const navigation = [
     roles: ["admin"],
   },
   { name: "Laboratorios", href: "/laboratorios", roles: ["admin"] },
-  {
-    name: "Envios",
-    href: "/envio",
-    roles: ["operador nacional", "admin"],
-  },
 ];
 
 const { auth } = useSupabaseClient();

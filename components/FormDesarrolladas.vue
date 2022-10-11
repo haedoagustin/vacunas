@@ -4,7 +4,7 @@ const client = useSupabaseClient();
 
 let vacunas = ref([]);
 let laboratorios = ref([]);
-let loading = ref("false");
+let loading = ref(false);
 
 const vacunaDesarrollada = {
   idVacuna: ref(-1),
