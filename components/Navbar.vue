@@ -13,20 +13,42 @@ import {
   UserIcon,
   XMarkIcon,
 } from "@heroicons/vue/24/outline/index.js";
+import { getDocs } from "../assets/crud";
 
 const route = useRoute();
 
 const current = (item) => route.matched[0].path === item.href;
 
+const user = useSupabaseUser();
+const client = useSupabaseClient();
+const actualUser = ref({});
+
 const navigation = [
-  { name: "Inicio", href: "/" },
-  { name: "Compras", href: "/compras" },
-  { name: "Distribución", href: "/distribucion" },
-  { name: "Vacunación", href: "/vacunacion" },
-  { name: "Calendario", href: "/calendario" },
-  { name: "Vacunas", href: "/vacunas" },
-  { name: "Vacunas desarrolladas", href: "/vacunas-desarrolladas" },
-  { name: "Laboratorios", href: "/laboratorios" },
+  { name: "Inicio", href: "/", roles: ["any", "admin"] },
+  { name: "Compras", href: "/compras", roles: ["operador nacional", "admin"] },
+  {
+    name: "Distribución",
+    href: "/distribucion",
+    roles: ["operador nacional", "admin"],
+  },
+  {
+    name: "Vacunación",
+    href: "/vacunacion",
+    roles: ["vacunador", "admin"],
+  },
+  { name: "Calendario", href: "/calendario", roles: ["any", "admin"] },
+  { name: "Vacunas", href: "/vacunas", roles: ["admin"] },
+  {
+    name: "Vacunas desarrolladas",
+    href: "/vacunas-desarrolladas",
+    roles: ["admin"],
+  },
+  { name: "Laboratorios", href: "/laboratorios", roles: ["admin"] },
+  {
+    name: "Envios",
+    href: "/envio",
+    roles: ["operador nacional", "admin"],
+  },
 ];
 
 const { auth } = useSupabaseClient();
@@ -36,6 +58,15 @@ const logout = async () => {
     navigateTo("/login");
   });
 };
+
+(async () => {
+  const usuarios = await getDocs(client, "usuarios", {
+    column: "auth_user_id",
+    value: user.value.id,
+  });
+  actualUser.value = usuarios.data[0];
+  console.log(usuarios, user, actualUser);
+})();
 </script>
 
 <template>
@@ -61,19 +92,21 @@ const logout = async () => {
           </div>
           <div class="hidden sm:ml-6 sm:block">
             <div class="flex space-x-4">
-              <NuxtLink
-                v-for="item in navigation"
-                :key="item.name"
-                :to="item.href"
-                :class="[
-                  current(item)
-                    ? 'bg-gray-900 text-white'
-                    : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                  'px-3 py-2 rounded-md text-sm font-medium',
-                ]"
-                :aria-current="current(item) ? 'page' : undefined"
-                >{{ item.name }}</NuxtLink
-              >
+              <div v-for="item in navigation">
+                <NuxtLink
+                  v-if="item.roles.includes(actualUser.rol)"
+                  :key="item.name"
+                  :to="item.href"
+                  :class="[
+                    current(item)
+                      ? 'bg-gray-900 text-white'
+                      : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                    'px-3 py-2 rounded-md text-sm font-medium',
+                  ]"
+                  :aria-current="current(item) ? 'page' : undefined"
+                  >{{ item.name }}</NuxtLink
+                >
+              </div>
             </div>
           </div>
         </div>

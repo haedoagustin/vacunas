@@ -6,7 +6,6 @@ const loadVacunas = async () => {
   try {
     let { data } = await supabase.from("vacunas").select("*");
     vacunas.value = data;
-    console.log(data);
   } catch (err) {
     console.log("Algo salio mal cargando las vacunas: ", err);
   }
