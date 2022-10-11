@@ -4,6 +4,7 @@ const client = useSupabaseClient();
 
 let vacunas = ref([]);
 let laboratorios = ref([]);
+let loading = ref("false");
 
 const vacunaDesarrollada = {
   idVacuna: ref(-1),
@@ -22,6 +23,8 @@ const load = async () => {
 };
 
 const submitVacuna = async () => {
+  if (loading.value) return;
+  loading.value = true;
   const row = {};
 
   const lab = laboratorios.value.find(
@@ -47,6 +50,7 @@ const submitVacuna = async () => {
     $emit("submit-vacuna");
 
     console.log(error);
+    loading.value = false;
   } catch (err) {
     console.log("Algo salio mal creando una vacuna:", err);
   }
@@ -143,10 +147,18 @@ load();
           v-model="vacunaDesarrollada.tiempoEntrega.value"
         />
       </div>
-      <input
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
-        type="submit"
-      />
+      <button
+        href="#"
+        class="w-full flex justify-center inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        @click="realizarCompra"
+      >
+        <LoadingSpin
+          v-if="loading"
+          class="animate-spin h-5 w-5 text-indigo-500 group-hover:text-indigo-400 cursor-wait"
+          aria-hidden="true"
+        />
+        <span v-if="!loading"> Crear vacuna </span>
+      </button>
     </form>
   </div>
 </template>

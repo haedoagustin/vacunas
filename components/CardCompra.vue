@@ -8,6 +8,8 @@ const cantidad = ref(0);
 const loading = ref(false);
 
 const realizarCompra = async (e) => {
+  if (loading.value) return;
+  loading.value = true;
   const row = {};
   const date = new Date();
   date.setDate(date.getDate() + props.vacuna.tiempo_entrega);
@@ -33,6 +35,7 @@ const realizarCompra = async (e) => {
     const { data, error } = await client.from("compras").insert(row);
     rowLote.compra_id = data[0].id;
     await client.from("lotes").insert(rowLote);
+    loading.value = false;
   } catch (err) {
     console.log("Algo salio mal realizando la compra:", err);
   }
@@ -76,10 +79,10 @@ const realizarCompra = async (e) => {
     >
       <LoadingSpin
         v-if="loading"
-        class="animate-spin h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
+        class="animate-spin h-5 w-5 text-indigo-500 group-hover:text-indigo-400 cursor-wait"
         aria-hidden="true"
       />
-      Comprar
+      <span v-if="!loading"> Comprar </span>
     </a>
     <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
       Total: {{ cantidad * props.vacuna.precio }}
