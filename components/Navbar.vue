@@ -60,7 +60,7 @@ const logout = async () => {
     value: user.value.id,
   });
   actualUser.value = usuarios.data[0];
-  console.log(usuarios, user, actualUser);
+  // console.log(usuarios, user, actualUser);
 })();
 </script>
 
