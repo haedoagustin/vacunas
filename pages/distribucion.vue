@@ -19,7 +19,6 @@ const loading = ref(false);
 const vacunaSelected = ref("");
 
 const envio = {
-  lote_id: 0,
   jurisdiccion_id: 0,
   cantidad: 0,
 };
@@ -34,8 +33,10 @@ const getStock = () => {
     : vacunaDesarrolladaId;
   console.log(vacunaDesarrolladaId);
   const stock = lotes.value
-    .filter((lote) =>
-      vacunaDesarrolladaId.includes(lote.vacuna_desarrollada_id)
+    .filter(
+      (lote) =>
+        vacunaDesarrolladaId.includes(lote.vacuna_desarrollada_id) &&
+        !lote.vencido
     )
     .map((lote) => lote.cantidad_disponibles)
     .reduce((cantAnterior, cantActual) => cantAnterior + cantActual, 0);
@@ -99,8 +100,9 @@ const realizarEnvio = async (e) => {
     };
   });
 
-  await client.from("envios").insert(envios);
+  const { error } = await client.from("envios").insert(envios);
   loading.value = false;
+  console.log(error);
 };
 
 (async () => {
