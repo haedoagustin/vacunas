@@ -134,36 +134,6 @@ export const getEnviosParaVacunacion = async (
   };
 };
 
-export const postVacunacion = async (client, vacunacion) => {
-  try {
-    const { data, error } = await client
-      .from("vacunaciones")
-      .insert(vacunacion)
-      .select("*, envio_id(id, cantidad_disponible)")
-      .single();
-
-    if (!error) {
-      try {
-        // Decrementar el stock de vacunas
-        await client
-          .from("envios")
-          .update({
-            cantidad_disponible: --data.envio_id.cantidad_disponible,
-          })
-          .eq("id", data.envio_id.id);
-      } catch (err) {
-        // Elimina la vacunación recién creada por error al decrementar la
-        // cantidad del envio
-        await client.from("vacunaciones").delete().eq("id", data.id);
-        throw ("Algo salio mal registrando una vacunación:", err);
-      }
-    }
-    return data;
-  } catch (err) {
-    throw `Algo salio mal registrando una vacunación: ${err}`;
-  }
-};
-
 export const getEdad = (fecha_nacimiento) => {
   var hoy = new Date();
   // Formatear "26/05/1954 06:18:32" => "1954-05-26T06:18:32Z"
