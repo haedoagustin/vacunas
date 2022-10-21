@@ -1,5 +1,5 @@
 <script setup>
-import { getEdad, getDocs, getUsuario, getDatosDosis, getVacunasDesarrolladasByVacunaId, getEnviosParaVacunacion, postVacunacion } from "../assets/crud";
+import { getEdad, getDocs, getDatosDosis, getVacunasDesarrolladasByVacunaId, getEnviosParaVacunacion, postVacunacion } from "../assets/crud";
 const client = useSupabaseClient();
 
 const emit = defineEmits(['submit-vacunacion'])
