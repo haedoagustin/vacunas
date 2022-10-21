@@ -1,4 +1,5 @@
 <script setup>
+defineProps(['modelValue'])
 const emit = defineEmits(['update:modelValue'])
 
 const search = ref()
@@ -26,7 +27,7 @@ watch(search, (newSearch) => {
 <template>
     <Loading v-if="pending" />
 
-    <div class="mb-4 shadow-md">
+    <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2" for="tiempo-entrega">
             Ciudadano a vacunar
         </label>
