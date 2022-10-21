@@ -1,5 +1,5 @@
 <script setup>
-import { getEdad, getDocs, getDatosDosis, getVacunasDesarrolladasByVacunaId, getEnviosParaVacunacion, postVacunacion } from "../assets/crud";
+import { getEdad, getDocs, getDatosDosis, getVacunasDesarrolladasByVacunaId, getEnviosParaVacunacion } from "../assets/crud";
 const client = useSupabaseClient();
 
 const emit = defineEmits(['submit-vacunacion'])
@@ -63,23 +63,16 @@ watch(envio, async () => {
 })
 
 const registrarVacunacion = async () => {
-
-  if (loading.value) return;
-  loading.value = true;
-
+  let vacunacion = {
+    vacunador: usuario.id,
+    dni_vacunado: ciudadano.value?.DNI,
+    envio_id: envio.value?.id
+  }
   try {
-    const data = await postVacunacion(client, {
-      vacunador: usuario.id,
-      dni_vacunado: ciudadano.value?.DNI,
-      envio_id: envio.value?.id
-    })
-
+    let { data } = await $fetch('/api/vacunacion', { method: 'post', body: { vacunacion } })
     emit("submit-vacunacion", data);
-    loading.value = false;
-
   } catch (e) {
     error.value = e
-    loading.value = false;
   }
 }
 </script>
@@ -183,8 +176,9 @@ const registrarVacunacion = async () => {
         </div>
       </div>
 
-      <ErrorAlert v-if="error" :error="error" />
     </form>
+
+    <ErrorAlert v-if="error" :error="error" />
 
   </div>
 </template>
