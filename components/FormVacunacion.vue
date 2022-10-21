@@ -12,7 +12,7 @@ const vacuna_desarrollada = ref()
 const envios = ref([])
 const envio = ref()
 const dosis = reactive({ fecha_ultima: null, proxima: null })
-const usuario = await getUsuario(client);
+const usuario = await useUsuario()
 
 const loading = ref(false)
 const error = ref()

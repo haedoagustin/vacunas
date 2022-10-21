@@ -116,7 +116,7 @@ export const getUsuario = async (client) => {
   const { data } = await client
     .from("usuarios")
     .select("*, jurisdiccion(*)")
-    .eq("auth_user_id", user.value.id)
+    .eq("auth_user_id", user?.value.id)
     .single();
   return data;
 };
