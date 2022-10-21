@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
   if (!["/login", "/confirm", "/api/_supabase/session"].includes(to)) {
     let user = await serverSupabaseUser(event);
     if (!user) {
-      sendRedirect(event, "/login", 503);
+      await sendRedirect(event, "/login", 503);
     }
   }
 });
