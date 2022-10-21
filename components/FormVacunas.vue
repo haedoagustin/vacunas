@@ -11,6 +11,12 @@ const vacuna = {
 };
 let loading = ref(false);
 
+let tipos_vacuna = [
+  'Calendario',
+  'Estacional',
+  'Pandemica'
+];
+
 const intervaloValido = (intervalo) => intervalo < 13 && intervalo > 0;
 
 const submitVacuna = async () => {
@@ -80,8 +86,7 @@ const submitVacuna = async () => {
           required
           v-model="vacuna.tipo.value"
         >
-          <option>Estacional</option>
-          <option>Pandemica</option>
+          <option v-for="tipo_vacuna in tipos_vacuna">{{ tipo_vacuna }}</option>
         </select>
       </div>
       <div class="mb-4 shadow-md">
