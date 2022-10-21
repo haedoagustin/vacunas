@@ -111,16 +111,6 @@ export const getVacunasDesarrolladasByVacunaId = async (client, id_vacuna) => {
   };
 };
 
-export const getUsuario = async (client) => {
-  const user = useSupabaseUser();
-  const { data } = await client
-    .from("usuarios")
-    .select("*, jurisdiccion(*)")
-    .eq("auth_user_id", user.value.id)
-    .single();
-  return data;
-};
-
 export const getEnviosParaVacunacion = async (
   client,
   jurisdiccion_id,

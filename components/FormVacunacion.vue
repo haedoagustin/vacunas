@@ -1,5 +1,5 @@
 <script setup>
-import { getEdad, getDocs, getUsuario, getDatosDosis, getVacunasDesarrolladasByVacunaId, getEnviosParaVacunacion, postVacunacion } from "../assets/crud";
+import { getEdad, getDocs, getDatosDosis, getVacunasDesarrolladasByVacunaId, getEnviosParaVacunacion, postVacunacion } from "../assets/crud";
 const client = useSupabaseClient();
 
 const emit = defineEmits(['submit-vacunacion'])
@@ -12,7 +12,7 @@ const vacuna_desarrollada = ref()
 const envios = ref([])
 const envio = ref()
 const dosis = reactive({ fecha_ultima: null, proxima: null })
-const usuario = await getUsuario(client);
+const usuario = await useUsuario()
 
 const loading = ref(false)
 const error = ref()
