@@ -82,27 +82,20 @@ export const getVacunaciones = async (client) => {
 };
 
 export const getDatosDosis = async (client, id_vacuna, dni_ciudadano) => {
-  let {
-    data: ultima_dosis,
-    count: cantidad_dosis,
-    error,
-  } = await client
+  let { data, count, error } = await client
     .from("vacunaciones")
     .select(
-      `*,
-      envio_id(lote_id(vacuna_desarrollada_id(vacuna_id(*))))
-    `,
+      "created_at, envio_id!inner(lote_id!inner(vacuna_desarrollada_id!inner(vacuna_id)))",
       { count: "exact", head: false }
     )
     .eq("dni_vacunado", dni_ciudadano)
     .eq("envio_id.lote_id.vacuna_desarrollada_id.vacuna_id", id_vacuna)
     .order("created_at", { ascending: false })
-    .limit(1)
-    .single();
+    .limit(1);
 
   return {
-    ultima_dosis,
-    cantidad_dosis,
+    fecha_ultima: data[0]?.created_at,
+    proxima: count + 1,
     error,
   };
 };
@@ -130,17 +123,17 @@ export const getUsuario = async (client) => {
 
 export const getEnviosParaVacunacion = async (
   client,
+  jurisdiccion_id,
   vacuna_desarrollada_id
 ) => {
-  let usuario = await getUsuario(client);
   let { data, error } = await client
     .from("envios")
-    .select("*, lote_id(*)")
-    .eq("jurisdiccion_id", usuario.jurisdiccion.id)
-    .eq("lote_id.vacuna_desarrollada_id", vacuna_desarrollada_id)
+    .select("*, lote_id!inner(vacuna_desarrollada_id!inner(*))")
+    .eq("lote_id.vacuna_desarrollada_id.id", vacuna_desarrollada_id)
+    .eq("jurisdiccion_id", jurisdiccion_id)
     .gt("cantidad_disponible", 0);
 
-  if (!data.length) {
+  if (!data) {
     error =
       "No hay dosis disponibles. La vacuna seleccionada no tiene más dosis disponibles en la jurisdicción en la que usted se encuentra vacunando. Compruebe que haya seleccionado la vacuna y el laboratorio correctos.";
   }
