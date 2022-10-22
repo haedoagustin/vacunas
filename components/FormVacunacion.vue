@@ -1,68 +1,83 @@
 <script setup>
-import { getEdad, getDocs, getDatosDosis, getVacunasDesarrolladasByVacunaId, getEnviosParaVacunacion } from "../assets/crud";
-const client = useSupabaseClient();
+import { getEdad } from "~/helpers/dates";
 
 const emit = defineEmits(['submit-vacunacion'])
 
-const ciudadano = ref();
-const vacuna = ref()
-const vacunas = ref([])
-const vacunas_desarrolladas = ref([])
-const vacuna_desarrollada = ref()
-const envios = ref([])
-const envio = ref()
-const dosis = reactive({ fecha_ultima: null, proxima: null })
 const usuario = await useUsuario()
 
 const loading = ref(false)
 const error = ref()
 
+const ciudadano = ref();
+const vacunas = ref([]);
+const vacuna = ref()
+const vacunas_desarrolladas = ref([]);
+const vacuna_desarrollada = ref()
+const envios = ref([]);
+const envio = ref();
+const dosis = reactive({ fecha_ultima: null, proxima: null })
 
 watch(ciudadano, async () => {
+  vacunas.value = []
+  vacuna.value = null
   if (ciudadano.value) {
-    vacunas.value = []
-    let { data } = await getDocs(client, 'vacunas');
-    vacunas.value = data
+    try {
+      let data = await $fetch('/api/vacuna')
+      vacunas.value = data
+    } catch ({ data: err }) {
+      error.value = err.message
+    }
   }
 })
 
 watch(vacuna, async () => {
+  error.value = null;
+  vacunas_desarrolladas.value = []
+  vacuna_desarrollada.value = null;
   if (vacuna.value) {
-    vacunas_desarrolladas.value = []
-    envios.value = []
-    envio.value = null
-    dosis.value = { fecha_ultima: null, proxima: null }
-    let { data } = await getVacunasDesarrolladasByVacunaId(client, vacuna.value.id)
-    vacunas_desarrolladas.value = data
+    if (vacuna.inhabilitada) {
+      error.value = "La pandemia no está activa, no puede aplicar vacunas.";
+    } else {
+      try {
+        let data = await $fetch('/api/vacuna_desarrollada', { query: { vacuna_id: vacuna.value.id } })
+        vacunas_desarrolladas.value = data
+      } catch ({ data: err }) {
+        error.value = err.message
+      }
+    }
   }
 })
 
 watch(vacuna_desarrollada, async () => {
+  error.value = null;
+  envios.value = [];
+  envio.value = null;
   if (vacuna_desarrollada.value) {
-    envios.value = []
-    envio.value = null
-    dosis.value = { fecha_ultima: null, proxima: null }
-    let { data, error: errorValue } = await getEnviosParaVacunacion(client, usuario.jurisdiccion.id, vacuna_desarrollada.value.id)
-    envios.value = data
-    error.value = errorValue
+    try {
+      let data = await $fetch('/api/envios', { query: { jurisdiccion_id: usuario.jurisdiccion.id, vacuna_desarrollada_id: vacuna_desarrollada.value.id } })
+      envios.value = data
+    } catch ({ data: err }) {
+      error.value = err.message
+    }
   }
 })
 
 watch(envio, async () => {
+  error.value = null;
+  dosis.value = { fecha_ultima: null, proxima: null };
   if (envio.value) {
-    dosis.fecha_ultima = null
-    dosis.proxima = null
-    let { fecha_ultima, proxima, error: errorValue } = await getDatosDosis(client, vacuna_desarrollada.value.id, ciudadano.value.DNI)
-    if (errorValue) {
-      error.value = errorValue
-    } else {
+    try {
+      let { fecha_ultima, proxima } = await $fetch('/api/dosis', { query: { vacuna_desarrollada_id: vacuna_desarrollada.value.id, ciudadano_dni: ciudadano.value.DNI } })
       dosis.fecha_ultima = fecha_ultima
       dosis.proxima = proxima
+    } catch ({ data: err }) {
+      error.value = err.message
     }
   }
 })
 
 const registrarVacunacion = async () => {
+  error.value = null;
   let vacunacion = {
     vacunador: usuario.id,
     dni_vacunado: ciudadano.value?.DNI,
@@ -91,9 +106,9 @@ const registrarVacunacion = async () => {
       </div>
     </div>
 
-    <form v-if="ciudadano" @submit="registrarVacunacion">
+    <form v-if="ciudadano" @submit.prevent="registrarVacunacion">
 
-      <div v-if="vacunas?.length" class="col-span-6 sm:col-span-3 mb-4">
+      <div v-if="vacunas.length" class="col-span-6 sm:col-span-3 mb-4">
         <label for="vacuna" class="block text-sm font-medium text-gray-700">Vacuna</label>
         <select
           class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
@@ -103,7 +118,7 @@ const registrarVacunacion = async () => {
           </option>
         </select>
 
-        <div v-if="vacunas_desarrolladas?.length">
+        <div v-if="vacunas_desarrolladas.length">
 
           <div class="col-span-6 sm:col-span-3 mb-4">
             <label for="vacuna_desarrollada" class="block text-sm font-medium text-gray-700">Laboratorio que
@@ -117,7 +132,7 @@ const registrarVacunacion = async () => {
             </select>
           </div>
 
-          <div v-if="envios?.length">
+          <div v-if="envios.length">
 
             <div class="col-span-6 sm:col-span-3 mb-4">
               <label for="vacuna_desarrollada" class="block text-sm font-medium text-gray-700">Lote de la vacuna a
