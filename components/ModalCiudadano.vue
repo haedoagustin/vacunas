@@ -85,6 +85,10 @@ watch(show, () => {
                     ¿Es personal de salud?: <span class="font-medium">{{ ciudadano.personal_salud ? 'Si' : 'No'
                     }}</span>
                   </p>
+                  <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                    ¿Está embarazada?: <span class="font-medium">{{ ciudadano.embarazada ? 'Si' : 'No'
+                    }}</span>
+                  </p>
                 </div>
               </div>
             </div>
