@@ -111,16 +111,6 @@ export const getVacunasDesarrolladasByVacunaId = async (client, id_vacuna) => {
   };
 };
 
-export const getUsuario = async (client) => {
-  const user = useSupabaseUser();
-  const { data } = await client
-    .from("usuarios")
-    .select("*, jurisdiccion(*)")
-    .eq("auth_user_id", user.value.id)
-    .single();
-  return data;
-};
-
 export const getEnviosParaVacunacion = async (
   client,
   jurisdiccion_id,
@@ -128,12 +118,12 @@ export const getEnviosParaVacunacion = async (
 ) => {
   let { data, error } = await client
     .from("envios")
-    .select("*, lote_id!inner(vacuna_desarrollada_id!inner(*))")
+    .select("*, lote_id!inner(id, vacuna_desarrollada_id!inner(*))")
     .eq("lote_id.vacuna_desarrollada_id.id", vacuna_desarrollada_id)
     .eq("jurisdiccion_id", jurisdiccion_id)
     .gt("cantidad_disponible", 0);
 
-  if (!data) {
+  if (!data.length) {
     error =
       "No hay dosis disponibles. La vacuna seleccionada no tiene más dosis disponibles en la jurisdicción en la que usted se encuentra vacunando. Compruebe que haya seleccionado la vacuna y el laboratorio correctos.";
   }
@@ -142,36 +132,6 @@ export const getEnviosParaVacunacion = async (
     data,
     error,
   };
-};
-
-export const postVacunacion = async (client, vacunacion) => {
-  try {
-    const { data, error } = await client
-      .from("vacunaciones")
-      .insert(vacunacion)
-      .select("*, envio_id(id, cantidad_disponible)")
-      .single();
-
-    if (!error) {
-      try {
-        // Decrementar el stock de vacunas
-        await client
-          .from("envios")
-          .update({
-            cantidad_disponible: --data.envio_id.cantidad_disponible,
-          })
-          .eq("id", data.envio_id.id);
-      } catch (err) {
-        // Elimina la vacunación recién creada por error al decrementar la
-        // cantidad del envio
-        await client.from("vacunaciones").delete().eq("id", data.id);
-        throw ("Algo salio mal registrando una vacunación:", err);
-      }
-    }
-    return data;
-  } catch (err) {
-    throw `Algo salio mal registrando una vacunación: ${err}`;
-  }
 };
 
 export const getEdad = (fecha_nacimiento) => {
