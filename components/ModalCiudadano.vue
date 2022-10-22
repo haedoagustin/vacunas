@@ -1,5 +1,5 @@
 <script setup>
-import { getEdad } from "../assets/crud";
+import { getEdad } from "~/helpers/dates";
 const { dni, buttonClass } = defineProps(['dni', 'buttonClass'])
 const show = ref(false)
 const ciudadano = ref({})
