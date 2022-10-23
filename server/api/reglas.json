@@ -1,0 +1,840 @@
+{
+  "Hepatitis B": {
+    "1-dosis": {
+      "criteria": [
+        {
+          "has": {
+            "trait": "edad",
+            "comparison": "above",
+            "value": 11
+          }
+        },
+        {
+          "has": {
+            "trait": "nroDosis",
+            "comparison": "equals",
+            "value": 0
+          }
+        },
+        {
+          "has": {
+            "trait": "embarazada",
+            "comparison": "equals",
+            "value": "false"
+          }
+        }
+      ],
+      "criteriaLogic": "and"
+    },
+
+    "2-dosis": {
+      "criteria": [
+        {
+          "has": {
+            "trait": "edad",
+            "comparison": "above",
+            "value": 11
+          }
+        },
+        {
+          "has": {
+            "trait": "nroDosis",
+            "comparison": "equals",
+            "value": 1
+          }
+        },
+        {
+          "has": {
+            "trait": "embarazada",
+            "comparison": "equals",
+            "value": "false"
+          }
+        },
+        {
+          "has": {
+            "trait": "mesesUltimaDosis",
+            "comparison": "above",
+            "value": 1
+          }
+        }
+      ],
+      "criteriaLogic": "and"
+    },
+    "3-dosis": {
+      "criteria": [
+        {
+          "has": {
+            "trait": "edad",
+            "comparison": "above",
+            "value": 11
+          }
+        },
+        {
+          "has": {
+            "trait": "nroDosis",
+            "comparison": "equals",
+            "value": 2
+          }
+        },
+        {
+          "has": {
+            "trait": "embarazada",
+            "comparison": "equals",
+            "value": "false"
+          }
+        },
+        {
+          "has": {
+            "trait": "mesesUltimaDosis",
+            "comparison": "above",
+            "value": 5
+          }
+        }
+      ],
+      "criteriaLogic": "and"
+    }
+  },
+  "BCG": {
+    "1-dosis": {
+      "criteria": [
+        {
+          "has": {
+            "trait": "edad",
+            "comparison": "equals",
+            "value": 0
+          }
+        },
+        {
+          "has": {
+            "trait": "nroDosis",
+            "comparison": "equals",
+            "value": 0
+          }
+        }
+      ],
+      "criteriaLogic": "and"
+    }
+  },
+  "Rotavirus": {
+    "1-dosis": {
+      "criteria": [
+        {
+          "has": {
+            "trait": "meses",
+            "comparison": "above",
+            "value": 2
+          }
+        },
+        {
+          "has": {
+            "trait": "meses",
+            "comparison": "below",
+            "value": 4
+          }
+        },
+        {
+          "has": {
+            "trait": "nroDosis",
+            "comparison": "equals",
+            "value": 0
+          }
+        }
+      ],
+      "criteriaLogic": "and"
+    },
+    "2-dosis": {
+      "criteria": [
+        {
+          "has": {
+            "trait": "meses",
+            "comparison": "above",
+            "value": 4
+          }
+        },
+        {
+          "has": {
+            "trait": "meses",
+            "comparison": "below",
+            "value": 6
+          }
+        },
+        {
+          "has": {
+            "trait": "nroDosis",
+            "comparison": "equals",
+            "value": 1
+          }
+        },
+        {
+          "has": {
+            "trait": "mesesUltimaDosis",
+            "comparison": "above",
+            "value": 2
+          }
+        }
+      ],
+      "criteriaLogic": "and"
+    }
+  },
+  "Neumococo Conjugada": {
+    "1-dosis": {
+      "criteria": [
+        {
+          "has": {
+            "trait": "meses",
+            "comparison": "above",
+            "value": 2
+          }
+        },
+        {
+          "has": {
+            "trait": "nroDosis",
+            "comparison": "equals",
+            "value": 0
+          }
+        }
+      ],
+      "criteriaLogic": "and"
+    },
+    "2-dosis": {
+      "criteria": [
+        {
+          "has": {
+            "trait": "meses",
+            "comparison": "above",
+            "value": 4
+          }
+        },
+        {
+          "has": {
+            "trait": "nroDosis",
+            "comparison": "equals",
+            "value": 1
+          }
+        },
+        {
+          "has": {
+            "trait": "mesesUltimaDosis",
+            "comparison": "above",
+            "value": 2
+          }
+        }
+      ],
+      "criteriaLogic": "and"
+    },
+    "refuerzo": {
+      "criteria": [
+        {
+          "has": {
+            "trait": "edad",
+            "comparison": "above",
+            "value": 1
+          }
+        },
+        {
+          "has": {
+            "trait": "nroDosis",
+            "comparison": "equals",
+            "value": 2
+          }
+        },
+        {
+          "has": {
+            "trait": "mesesUltimaDosis",
+            "comparison": "above",
+            "value": 6
+          }
+        }
+      ],
+      "criteriaLogic": "and"
+    }
+  },
+  "Quintuple Pentavalente": {
+    "1-dosis": {
+      "criteria": [
+        {
+          "has": {
+            "trait": "meses",
+            "comparison": "above",
+            "value": 2
+          }
+        },
+        {
+          "has": {
+            "trait": "nroDosis",
+            "comparison": "equals",
+            "value": 0
+          }
+        }
+      ],
+      "criteriaLogic": "and"
+    },
+    "2-dosis": {
+      "criteria": [
+        {
+          "has": {
+            "trait": "meses",
+            "comparison": "above",
+            "value": 4
+          }
+        },
+        {
+          "has": {
+            "trait": "nroDosis",
+            "comparison": "equals",
+            "value": 1
+          }
+        },
+        {
+          "has": {
+            "trait": "mesesUltimaDosis",
+            "comparison": "above",
+            "value": 2
+          }
+        }
+      ],
+      "criteriaLogic": "and"
+    },
+    "3-dosis": {
+      "criteria": [
+        {
+          "has": {
+            "trait": "meses",
+            "comparison": "above",
+            "value": 6
+          }
+        },
+        {
+          "has": {
+            "trait": "nroDosis",
+            "comparison": "equals",
+            "value": 2
+          }
+        },
+        {
+          "has": {
+            "trait": "mesesUltimaDosis",
+            "comparison": "above",
+            "value": 2
+          }
+        }
+      ],
+      "criteriaLogic": "and"
+    },
+    "refuerzo": {
+      "criteria": [
+        {
+          "has": {
+            "trait": "edad",
+            "comparison": "above",
+            "value": 1
+          }
+        },
+        {
+          "has": {
+            "trait": "meses",
+            "comparison": "above",
+            "value": 3
+          }
+        },
+        {
+          "has": {
+            "trait": "nroDosis",
+            "comparison": "equals",
+            "value": 3
+          }
+        },
+        {
+          "has": {
+            "trait": "mesesUltimaDosis",
+            "comparison": "above",
+            "value": 9
+          }
+        }
+      ],
+      "criteriaLogic": "and"
+    }
+  },
+  "Salk": {
+    "1-dosis": {
+      "criteria": [
+        {
+          "has": {
+            "trait": "meses",
+            "comparison": "above",
+            "value": 2
+          }
+        },
+        {
+          "has": {
+            "trait": "nroDosis",
+            "comparison": "equals",
+            "value": 0
+          }
+        }
+      ],
+      "criteriaLogic": "and"
+    },
+    "2-dosis": {
+      "criteria": [
+        {
+          "has": {
+            "trait": "meses",
+            "comparison": "above",
+            "value": 4
+          }
+        },
+        {
+          "has": {
+            "trait": "nroDosis",
+            "comparison": "equals",
+            "value": 1
+          }
+        },
+        {
+          "has": {
+            "trait": "mesesUltimaDosis",
+            "comparison": "above",
+            "value": 2
+          }
+        }
+      ],
+      "criteriaLogic": "and"
+    },
+    "3-dosis": {
+      "criteria": [
+        {
+          "has": {
+            "trait": "meses",
+            "comparison": "above",
+            "value": 6
+          }
+        },
+        {
+          "has": {
+            "trait": "nroDosis",
+            "comparison": "equals",
+            "value": 2
+          }
+        },
+        {
+          "has": {
+            "trait": "mesesUltimaDosis",
+            "comparison": "above",
+            "value": 2
+          }
+        }
+      ],
+      "criteriaLogic": "and"
+    },
+    "refuerzo": {
+      "criteria": [
+        {
+          "has": {
+            "trait": "edad",
+            "comparison": "above",
+            "value": 5
+          }
+        },
+        {
+          "has": {
+            "trait": "nroDosis",
+            "comparison": "equals",
+            "value": 3
+          }
+        }
+      ],
+      "criteriaLogic": "and"
+    }
+  },
+  "Meningococica Conjugada": {
+    "1-dosis": {
+      "criteria": [
+        {
+          "has": {
+            "trait": "meses",
+            "comparison": "above",
+            "value": 3
+          }
+        },
+        {
+          "has": {
+            "trait": "nroDosis",
+            "comparison": "equals",
+            "value": 0
+          }
+        }
+      ],
+      "criteriaLogic": "and"
+    },
+    "2-dosis": {
+      "criteria": [
+        {
+          "has": {
+            "trait": "meses",
+            "comparison": "above",
+            "value": 5
+          }
+        },
+        {
+          "has": {
+            "trait": "nroDosis",
+            "comparison": "equals",
+            "value": 1
+          }
+        },
+        {
+          "has": {
+            "trait": "mesesUltimaDosis",
+            "comparison": "above",
+            "value": 2
+          }
+        }
+      ],
+      "criteriaLogic": "and"
+    },
+    "refuerzo": {
+      "criteria": [
+        {
+          "has": {
+            "trait": "edad",
+            "comparison": "above",
+            "value": 1
+          }
+        },
+        {
+          "has": {
+            "trait": "meses",
+            "comparison": "above",
+            "value": 3
+          }
+        },
+        {
+          "has": {
+            "trait": "nroDosis",
+            "comparison": "equals",
+            "value": 3
+          }
+        },
+        {
+          "has": {
+            "trait": "mesesUltimaDosis",
+            "comparison": "above",
+            "value": 3
+          }
+        }
+      ],
+      "criteriaLogic": "and"
+    },
+    "unica": {
+      "criteria": [
+        {
+          "has": {
+            "trait": "edad",
+            "comparison": "above",
+            "value": 11
+          }
+        }
+      ],
+      "criteriaLogic": "and"
+    }
+  },
+  "Triple Viral": {},
+  "Hepatitis A": {
+    "unica": {
+      "criteria": [
+        {
+          "has": {
+            "trait": "edad",
+            "comparison": "above",
+            "value": 1
+          }
+        }
+      ],
+      "criteriaLogic": "and"
+    }
+  },
+  "Varicela": {
+    "1-dosis": {
+      "criteria": [
+        {
+          "has": {
+            "trait": "edad",
+            "comparison": "above",
+            "value": 1
+          }
+        },
+        {
+          "has": {
+            "trait": "nroDosis",
+            "comparison": "equals",
+            "value": 0
+          }
+        }
+      ],
+      "criteriaLogic": "and"
+    },
+    "2-dosis": {
+      "criteria": [
+        {
+          "has": {
+            "trait": "edad",
+            "comparison": "above",
+            "value": 5
+          }
+        },
+        {
+          "has": {
+            "trait": "nroDosis",
+            "comparison": "equals",
+            "value": 1
+          }
+        }
+      ],
+      "criteriaLogic": "and"
+    }
+  },
+  "Triple Bacteriana": {
+    "refuerzo": {
+      "criteria": [
+        {
+          "has": {
+            "trait": "edad",
+            "comparison": "above",
+            "value": 5
+          }
+        },
+        {
+          "has": {
+            "trait": "nroDosis",
+            "comparison": "equals",
+            "value": 0
+          }
+        }
+      ],
+      "criteriaLogic": "and"
+    }
+  },
+  "Triple Bacteriana Acelular": {
+    "unica": {
+      "criteria": [
+        {
+          "has": {
+            "trait": "edad",
+            "comparison": "above",
+            "value": 11
+          }
+        },
+        {
+          "has": {
+            "trait": "nroDosis",
+            "comparison": "equals",
+            "value": 0
+          }
+        }
+      ],
+      "criteriaLogic": "and"
+    },
+    "embarazadas": {
+      "criteria": [
+        {
+          "has": {
+            "trait": "embarazada",
+            "comparison": "equals",
+            "value": "true"
+          }
+        }
+      ],
+      "criteriaLogic": "and"
+    },
+    "personal salud": {
+      "criteria": [
+        {
+          "has": {
+            "trait": "personalSalud",
+            "comparison": "equals",
+            "value": "true"
+          }
+        },
+        {
+          "has": {
+            "trait": "mesesUltimaDosis",
+            "comparison": "above",
+            "value": 60
+          }
+        }
+      ],
+      "criteriaLogic": "and"
+    }
+  },
+  "VPH": {
+    "1-dosis": {
+      "criteria": [
+        {
+          "has": {
+            "trait": "edad",
+            "comparison": "above",
+            "value": 11
+          }
+        },
+        {
+          "has": {
+            "trait": "nroDosis",
+            "comparison": "equals",
+            "value": 0
+          }
+        }
+      ],
+      "criteriaLogic": "and"
+    },
+    "2-dosis": {
+      "criteria": [
+        {
+          "has": {
+            "trait": "nroDosis",
+            "comparison": "equals",
+            "value": 1
+          }
+        },
+        {
+          "has": {
+            "trait": "mesesUltimaDosis",
+            "comparison": "above",
+            "value": 5
+          }
+        }
+      ],
+      "criteriaLogic": "and"
+    }
+  },
+  "Doble Bacteriana": {
+    "1-dosis": {
+      "criteria": [
+        {
+          "has": {
+            "trait": "edad",
+            "comparison": "above",
+            "value": 18
+          }
+        },
+        {
+          "has": {
+            "trait": "nroDosis",
+            "comparison": "equals",
+            "value": 0
+          }
+        }
+      ],
+      "criteriaLogic": "and"
+    },
+    "refuerzo": {
+      "criteria": [
+        {
+          "has": {
+            "trait": "edad",
+            "comparison": "above",
+            "value": 18
+          }
+        },
+        {
+          "has": {
+            "trait": "nroDosis",
+            "comparison": "above",
+            "value": 1
+          }
+        },
+        {
+          "has": {
+            "trait": "mesesUltimaDosis",
+            "comparison": "above",
+            "value": 120
+          }
+        }
+      ],
+      "criteriaLogic": "and"
+    }
+  },
+  "Doble Viral": {},
+  "Fiebre Amarilla": {
+    "1-dosis": {
+      "criteria": [
+        {
+          "has": {
+            "trait": "edad",
+            "comparison": "above",
+            "value": 2
+          }
+        },
+        {
+          "has": {
+            "trait": "nroDosis",
+            "comparison": "equals",
+            "value": 0
+          }
+        },
+        {
+          "has": {
+            "trait": "riesgoFiebreAmarilla",
+            "comparison": "equals",
+            "value": "true"
+          }
+        }
+      ],
+      "criteriaLogic": "and"
+    },
+    "refuerzo": {
+      "criteria": [
+        {
+          "has": {
+            "trait": "edad",
+            "comparison": "above",
+            "value": 11
+          }
+        },
+        {
+          "has": {
+            "trait": "nroDosis",
+            "comparison": "equals",
+            "value": 1
+          }
+        },
+        {
+          "has": {
+            "trait": "riesgoFiebreAmarilla",
+            "comparison": "equals",
+            "value": "true"
+          }
+        },
+        {
+          "has": {
+            "trait": "mesesUltimaDosis",
+            "comparison": "above",
+            "value": 120
+          }
+        }
+      ],
+      "criteriaLogic": "and"
+    }
+  },
+  "Fiebre Hemorragica Argentina": {
+    "1-dosis": {
+      "criteria": [
+        {
+          "has": {
+            "trait": "edad",
+            "comparison": "above",
+            "value": 15
+          }
+        },
+        {
+          "has": {
+            "trait": "nroDosis",
+            "comparison": "equals",
+            "value": 0
+          }
+        }
+      ],
+      "criteriaLogic": "and"
+    }
+  }
+}

@@ -13,18 +13,21 @@ import {
   UserIcon,
   XMarkIcon,
 } from "@heroicons/vue/24/outline/index.js";
-import { getDocs } from "../assets/crud";
 
 const route = useRoute();
+const currentRoute = (item) => route.matched[0].path === item.href;
 
-const current = (item) => route.matched[0].path === item.href;
-
-const user = useSupabaseUser();
-const client = useSupabaseClient();
-const actualUser = ref({});
+const usuario = await useUsuario();
 
 const navigation = [
   { name: "Inicio", href: "/", roles: ["any", "admin"] },
+  { name: "Vacunas", href: "/vacunas", roles: ["admin"] },
+  {
+    name: "Vacunas desarrolladas",
+    href: "/vacunas-desarrolladas",
+    roles: ["admin"],
+  },
+  { name: "Laboratorios", href: "/laboratorios", roles: ["admin"] },
   { name: "Compras", href: "/compras", roles: ["operador nacional", "admin"] },
   {
     name: "Distribución",
@@ -36,11 +39,9 @@ const navigation = [
     href: "/vacunacion",
     roles: ["vacunador", "admin"],
   },
-  { name: "Calendario", href: "/calendario", roles: ["any", "admin"] },
-  { name: "Vacunas", href: "/vacunas", roles: ["admin"] },
   {
-    name: "Vacunas desarrolladas",
-    href: "/vacunas-desarrolladas",
+    name: "Reglas",
+    href: "/reglas",
     roles: ["admin"],
   },
   { name: "Laboratorios", href: "/laboratorios", roles: ["admin"] },
@@ -54,14 +55,6 @@ const logout = async () => {
     navigateTo("/login");
   });
 };
-
-(async () => {
-  const usuarios = await getDocs(client, "usuarios", {
-    column: "auth_user_id",
-    value: user.value.id,
-  });
-  actualUser.value = usuarios.data[0];
-})();
 </script>
 
 <template>
@@ -89,16 +82,16 @@ const logout = async () => {
             <div class="flex space-x-4">
               <div v-for="item in navigation">
                 <NuxtLink
-                  v-if="item.roles.includes(actualUser.rol)"
+                  v-if="item.roles.includes(usuario?.rol)"
                   :key="item.name"
                   :to="item.href"
                   :class="[
-                    current(item)
+                    currentRoute(item)
                       ? 'bg-gray-900 text-white'
                       : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                     'px-3 py-2 rounded-md text-sm font-medium',
                   ]"
-                  :aria-current="current(item) ? 'page' : undefined"
+                  :aria-current="currentRoute(item) ? 'page' : undefined"
                   >{{ item.name }}</NuxtLink
                 >
               </div>
@@ -114,7 +107,7 @@ const logout = async () => {
               <MenuButton
                 class="rounded-full p-1 bg-gray-800 text-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
               >
-                <span class="sr-only">Abrir mené de usuario</span>
+                <span class="sr-only">Abrir menú de usuario</span>
                 <UserIcon class="h-6 w-6 rounded-full" aria-hidden="true" />
               </MenuButton>
             </div>

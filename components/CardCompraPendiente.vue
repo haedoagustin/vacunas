@@ -7,14 +7,18 @@ let vacuna = ref("");
 let cantidad = ref("");
 let desarrollador = ref("");
 let loaded = ref(false);
+const loading = ref(false);
 
 const actualizarEstado = async (e) => {
+  if (loading.value) return;
+  loading.value = true;
   const { data, error } = await client
     .from("compras")
     .update({
       estado: props.compra.estado == "pendiente" ? "pagada" : "entregada",
     })
     .eq("id", props.compra.id);
+  loading.value = false;
 };
 
 (async () => {
@@ -81,7 +85,14 @@ const actualizarEstado = async (e) => {
       @click="actualizarEstado"
       v-if="props.compra.estado != 'entregada'"
     >
-      {{ props.compra.estado == "pendiente" ? "pagar" : "entregada" }}
+      <LoadingSpin
+        v-if="loading"
+        class="animate-spin h-5 w-5 text-indigo-500 group-hover:text-indigo-400 cursor-wait"
+        aria-hidden="true"
+      />
+      <span v-if="!loading">
+        {{ props.compra.estado == "pendiente" ? "pagar" : "entregada" }}</span
+      >
     </a>
   </div>
 </template>
