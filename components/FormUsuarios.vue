@@ -11,8 +11,6 @@ const usuario = {
 };
 let loading = ref(false);
 
-const intervaloValido = (intervalo) => intervalo < 13 && intervalo > 0;
-
 let jurisdicciones = ref([]);
 const loadJurisdicciones = async () => {
   try {
