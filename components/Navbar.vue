@@ -44,6 +44,7 @@ const navigation = [
     roles: ["admin"],
   },
   { name: "Laboratorios", href: "/laboratorios", roles: ["admin"] },
+  { name: "Usuarios", href:"/usuarios", roles:["admin"] }
 ];
 
 const { auth } = useSupabaseClient();
@@ -60,7 +61,6 @@ const logout = async () => {
     value: user.value.id,
   });
   actualUser.value = usuarios.data[0];
-  console.log(usuarios, user, actualUser);
 })();
 </script>
 
