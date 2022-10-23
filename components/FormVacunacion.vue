@@ -35,7 +35,7 @@ watch(vacuna, async () => {
   vacunas_desarrolladas.value = []
   vacuna_desarrollada.value = null;
   if (vacuna.value) {
-    if (vacuna.inhabilitada) {
+    if (vacuna.value.inhabilitada) {
       error.value = "La pandemia no está activa, no puede aplicar vacunas.";
     } else {
       try {
