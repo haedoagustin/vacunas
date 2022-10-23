@@ -1,71 +1,53 @@
 import brie from "brie";
 import reglas from "./reglas.json";
+import { monthDiff, getEdad } from "~/helpers/dates";
 import { serverSupabaseClient } from "#supabase/server";
-
-//probamos cosas con brie
-const user = {
-  edad: 10,
-  nroDosis: 1,
-  personalSalud: false,
-  embarazada: false,
-  mesesUltimaDosis: 1,
-};
-
-const featureSet = {
-  multiPartTestCase: {
-    criteria: [
-      {
-        has: {
-          trait: "edad",
-          comparison: "above",
-          value: 2,
-        },
-      },
-      {
-        has: {
-          trait: "edad",
-          comparison: "above",
-          value: 11,
-        },
-      },
-    ],
-    criteriaLogic: "and",
-  },
-};
-
-brie.setup({
-  data: user,
-  features: featureSet,
-});
-
-// const flags = brie.getAll();
-// console.log(flags);
 
 export default defineEventHandler(async (event) => {
   const client = serverSupabaseClient(event);
-  const { vacuna: vacunaId, persona, dosis } = await readBody(event);
+  const { vacuna, ciudadano } = await useBody(event);
 
-  const { data: vacuna } = await client
-    .from("vacunas")
-    .select("*")
-    .eq("id", vacunaId);
+  ciudadano.embarazada = true
 
-  const regla = reglas[vacuna[0].nombre][`${dosis}-dosis`];
+  try {
+    let { data, count } = await client
+      .from("vacunaciones")
+      .select(
+        "created_at, envio_id!inner(lote_id!inner(vacuna_desarrollada_id!inner(vacuna_id)))",
+        { count: "exact", head: false }
+      )
+      .eq("dni_vacunado", ciudadano.DNI)
+      .eq("envio_id.lote_id.vacuna_desarrollada_id.vacuna_id", vacuna.id)
+      .order("created_at", { ascending: false })
+      .limit(1);
 
-  if (!regla) return { message: "No hay reglas para esa dosis de esa vacuna" };
+    let proximaDosis = count + 1;
 
-  const featureSet = {
-    multiPartTestCase: regla,
-  };
+    let edad = getEdad(ciudadano.fecha_hora_nacimiento);
 
-  console.log(regla);
+    let ultimaDosis =
+      count != 0 ? monthDiff(new Date(data[0].created_at), new Date()) : null;
 
-  brie.setup({
-    data: persona,
-    features: featureSet,
-  });
-  const flags = brie.getAll();
-  console.log(flags);
+    const datos = {
+      proximaDosis,
+      edad,  // En meses
+      ultimaDosis, // En meses
+      personalSalud: ciudadano.personal_salud.toString(),
+      embarazada: ciudadano.embarazada.toString(),
+    };
 
-  return flags;
+    let idRegla = `${vacuna.nombre.replace(" ", "-")}:${proximaDosis}-dosis`;
+
+    brie.setup({
+      data: datos,
+      features: reglas,
+    });
+
+    return {
+      ...datos,
+      resultado: brie.get(idRegla)
+    }
+  } catch (e) {
+    throw e;
+  }
 });
