@@ -1,6 +1,7 @@
 <script setup>
 import { getDocs } from "../assets/crud";
 const client = useSupabaseClient();
+const emit = defineEmits(["submit-vacuna"]);
 
 let vacunas = ref([]);
 let laboratorios = ref([]);
@@ -47,7 +48,7 @@ const submitVacuna = async () => {
       .insert(row, { returning: "minimal" });
 
     // si la vacuna se creo correctamente cerramos el formulario
-    $emit("submit-vacuna");
+    emit("submit-vacuna");
 
     console.log(error);
     loading.value = false;

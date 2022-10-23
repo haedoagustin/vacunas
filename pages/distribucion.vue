@@ -31,7 +31,7 @@ const getStock = () => {
   vacunaDesarrolladaId = !vacunaDesarrolladaId.length
     ? [vacunaDesarrolladaId]
     : vacunaDesarrolladaId;
-  console.log(vacunaDesarrolladaId);
+
   const stock = lotes.value
     .filter(
       (lote) =>

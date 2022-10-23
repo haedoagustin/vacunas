@@ -49,7 +49,7 @@ const show = () => {
         <option value="entregada">Entregadas</option>
       </select>
     </div>
-    <div class="mb-4 shadow-md">
+    <div class="mb-4 shadow-md" v-if="tipoCompra == 'Comprar'">
       <label class="block text-gray-700 text-sm font-bold mb-2" for="tipo">
         Vacuna
       </label>
@@ -81,6 +81,17 @@ const show = () => {
         :key="compra.id"
         :compra="compra"
       ></CardCompraPendiente>
+      <div
+        v-if="
+          tipoCompra &&
+          tipoCompra != 'Comprar' &&
+          compras.filter((compra) => compra.estado == tipoCompra).length == 0
+        "
+      >
+        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+          Actualmente no hay ninguna compra {{ tipoCompra }}
+        </p>
+      </div>
     </div>
   </NuxtLayout>
 </template>

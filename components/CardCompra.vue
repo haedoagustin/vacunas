@@ -36,7 +36,9 @@ const realizarCompra = async (e) => {
     rowLote.compra_id = data[0].id;
     await client.from("lotes").insert(rowLote);
     loading.value = false;
+    location.reload();
   } catch (err) {
+    alert("Algo salio mal realizando la compra");
     console.log("Algo salio mal realizando la compra:", err);
   }
 };

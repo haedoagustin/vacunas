@@ -19,6 +19,7 @@ const actualizarEstado = async (e) => {
     })
     .eq("id", props.compra.id);
   loading.value = false;
+  location.reload();
 };
 
 (async () => {

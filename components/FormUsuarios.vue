@@ -1,13 +1,15 @@
 <script setup>
 const client = useSupabaseClient();
 
+const emit = defineEmits(["submit-usuario"]);
+
 const usuario = {
   nombre: ref(""),
   apellido: ref(""),
   rol: ref(null),
   jurisdiccion: ref(null),
   email: ref(""),
-  password: ref("")
+  password: ref(""),
 };
 let loading = ref(false);
 
@@ -21,32 +23,31 @@ const loadJurisdicciones = async () => {
   }
 };
 
-const submitForm = async () =>{
-    if (loading.value) return;
-    loading.value = true;
-    const formData = {};
+const submitForm = async () => {
+  if (loading.value) return;
+  loading.value = true;
+  const formData = {};
 
-    try {
-        formData.nombre = usuario.nombre.value
-        formData.apellido = usuario.apellido.value
-        formData.rol = usuario.rol.value
-        formData.jurisdiccion = usuario.jurisdiccion.value
-        formData.email = usuario.email.value
+  try {
+    formData.nombre = usuario.nombre.value;
+    formData.apellido = usuario.apellido.value;
+    formData.rol = usuario.rol.value;
+    formData.jurisdiccion = usuario.jurisdiccion.value;
+    formData.email = usuario.email.value;
 
-        const { data, error } = await useFetch('/api/users', {
-            'method': 'POST',
-            body: formData
-        })
+    const { data, error } = await useFetch("/api/users", {
+      method: "POST",
+      body: formData,
+    });
 
-        $emit("submit-usuario");
-        loading.value = false;
-    } catch (err) {
-        console.log("Algo salio mal creando el usuario:", err);
-    }
+    emit("submit-usuario");
+    loading.value = false;
+  } catch (err) {
+    console.log("Algo salio mal creando el usuario:", err);
+  }
+};
 
-}
-
-loadJurisdicciones()
+loadJurisdicciones();
 </script>
 
 <template>
@@ -130,7 +131,10 @@ loadJurisdicciones()
           required
           v-model="usuario.jurisdiccion.value"
         >
-         <option v-for="jurisdiccion in jurisdicciones" :value="jurisdiccion.id">
+          <option
+            v-for="jurisdiccion in jurisdicciones"
+            :value="jurisdiccion.id"
+          >
             {{ jurisdiccion.nombre }}
           </option>
         </select>
