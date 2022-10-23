@@ -27,6 +27,9 @@ const { data: vacunaciones, pending, error } = await useAsyncData('vacunaciones'
                                     Vacuna
                                 </th>
                                 <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                    Laboratorio
+                                </th>
+                                <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
                                     DNI Ciudadano
                                 </th>
                                 <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
@@ -47,6 +50,9 @@ const { data: vacunaciones, pending, error } = await useAsyncData('vacunaciones'
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                     {{ vacunacion.envio_id.lote_id.vacuna_desarrollada_id.vacuna_id.nombre }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                    {{ vacunacion.envio_id.lote_id.vacuna_desarrollada_id.laboratorio_id.nombre }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                     {{ vacunacion.dni_vacunado }}
