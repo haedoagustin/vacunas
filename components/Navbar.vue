@@ -36,7 +36,7 @@ const navigation = [
   {
     name: "Vacunación",
     href: "/vacunacion",
-    roles: ["vacunador", "admin"],
+    roles: ["vacunador", "admin", 'analista provincial'],
   },
   { name: "Laboratorios", href: "/laboratorios", roles: ["admin"] },
   { name: "Usuarios", href:"/usuarios", roles:["admin"] }
@@ -72,7 +72,7 @@ const logout = async () => {
           <div class="hidden sm:ml-6 sm:block">
             <div class="flex space-x-4">
               <div v-for="item in navigation">
-                <NuxtLink v-if="item.roles.includes(usuario?.rol)" :key="item.name" :to="item.href" :class="[
+                <NuxtLink v-if="item.roles.includes('any') || item.roles.includes(usuario?.rol)" :key="item.name" :to="item.href" :class="[
                   currentRoute(item)
                     ? 'bg-gray-900 text-white'
                     : 'text-gray-300 hover:bg-gray-700 hover:text-white',
