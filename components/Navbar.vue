@@ -21,11 +21,11 @@ const usuario = await useUsuario();
 
 const navigation = [
   { name: "Inicio", href: "/", roles: ["any", "admin"] },
-  { name: "Vacunas", href: "/vacunas", roles: ["admin"] },
+  { name: "Vacunas", href: "/vacunas", roles: ["admin",'operador nacional'] },
   {
     name: "Vacunas desarrolladas",
     href: "/vacunas-desarrolladas",
-    roles: ["admin"],
+    roles: ["admin", 'operador nacional'],
   },
   { name: "Compras", href: "/compras", roles: ["operador nacional", "admin"] },
   {
@@ -38,7 +38,7 @@ const navigation = [
     href: "/vacunacion",
     roles: ["vacunador", "admin", 'analista provincial'],
   },
-  { name: "Laboratorios", href: "/laboratorios", roles: ["admin"] },
+  { name: "Laboratorios", href: "/laboratorios", roles: ["admin", 'operador nacional'] },
   { name: "Usuarios", href:"/usuarios", roles:["admin"] }
 ];
 
