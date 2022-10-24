@@ -4,7 +4,9 @@ export default eventHandler(async (event) => {
   const body = await readBody(event)
 
   const { user, data, error } = await client.auth.api.createUser({
-    'email': body.email
+    email: body.email,
+    password: body.password,
+    email_confirm: true
   })
 
   if (error) {

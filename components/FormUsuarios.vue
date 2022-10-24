@@ -32,6 +32,7 @@ const submitForm = async () =>{
         formData.rol = usuario.rol.value
         formData.jurisdiccion = usuario.jurisdiccion.value
         formData.email = usuario.email.value
+        formData.password = usuario.password.value
 
         const { data, error } = await useFetch('/api/users', {
             'method': 'POST',
@@ -114,9 +115,10 @@ loadJurisdicciones()
           required
           v-model="usuario.rol.value"
         >
+          <option value="admin">Administrador</option>
           <option value="operador nacional">Operador Nacional</option>
           <option value="vacunador">Vacunador</option>
-          <option value="admin">Administrador</option>
+          <option value="analista provincial">Analista Provincial</option>
         </select>
       </div>
       <div class="mb-4 shadow-md">
