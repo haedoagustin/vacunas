@@ -40,16 +40,18 @@ const splitDateTime = (dateTime: string) =>
 export const formatDateTime = (dateTime: string) =>
   dateTime ? getNewDateTime(splitDateTime(dateTime)) : ultimo_dia_del_mes;
 
-export const getEdad = (fecha_nacimiento: string) => {
+export const getEdad = (fecha_hora_nacimiento: string) => {
   var hoy = new Date();
   // Formatear "26/05/1954 06:18:32" => "1954-05-26T06:18:32Z"
-  var cumpleanos = formatDateTime(fecha_nacimiento);
-  var edad = hoy.getFullYear() - cumpleanos.getFullYear();
-  var m = hoy.getMonth() - cumpleanos.getMonth();
+  var cumpleanos = formatDateTime(fecha_hora_nacimiento);
 
-  if (m < 0 || (m === 0 && hoy.getDate() < cumpleanos.getDate())) {
-    edad--;
-  }
+  return monthDiff(cumpleanos, hoy);
+};
 
-  return edad;
+export const monthDiff = (d1: Date, d2: Date) => {
+  let months: number;
+  months = (d2.getFullYear() - d1.getFullYear()) * 12;
+  months -= d1.getMonth();
+  months += d2.getMonth();
+  return months <= 0 ? 0 : months;
 };

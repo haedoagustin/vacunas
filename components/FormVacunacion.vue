@@ -1,6 +1,4 @@
 <script setup>
-import { getEdad } from "~/helpers/dates";
-
 const emit = defineEmits(['submit-vacunacion'])
 
 const usuario = await useUsuario()
@@ -15,7 +13,7 @@ const vacunas_desarrolladas = ref([]);
 const vacuna_desarrollada = ref()
 const envios = ref([]);
 const envio = ref();
-const dosis = reactive({ fecha_ultima: null, proxima: null })
+const resultado_reglas = ref()
 
 watch(ciudadano, async () => {
   vacunas.value = []
@@ -35,9 +33,10 @@ watch(vacuna, async () => {
   vacunas_desarrolladas.value = []
   vacuna_desarrollada.value = null;
   if (vacuna.value) {
-    if (vacuna.inhabilitada) {
+    if (vacuna.value.inhabilitada) {
       error.value = "La pandemia no está activa, no puede aplicar vacunas.";
     } else {
+      error.value = null
       try {
         let data = await $fetch('/api/vacuna_desarrollada', { query: { vacuna_id: vacuna.value.id } })
         vacunas_desarrolladas.value = data
@@ -64,12 +63,11 @@ watch(vacuna_desarrollada, async () => {
 
 watch(envio, async () => {
   error.value = null;
-  dosis.value = { fecha_ultima: null, proxima: null };
-  if (envio.value) {
+  resultado_reglas.value = null
+  if (envio.value && vacuna.value.tipo === 'Calendario') {
     try {
-      let { fecha_ultima, proxima } = await $fetch('/api/dosis', { query: { vacuna_desarrollada_id: vacuna_desarrollada.value.id, ciudadano_dni: ciudadano.value.DNI } })
-      dosis.fecha_ultima = fecha_ultima
-      dosis.proxima = proxima
+      let data = await $fetch('/api/reglas', { method: 'post', body: { vacuna: vacuna.value, ciudadano: ciudadano.value } })
+      resultado_reglas.value = data
     } catch ({ data: err }) {
       error.value = err.message
     }
@@ -148,36 +146,55 @@ const registrarVacunacion = async () => {
 
             <div v-if="envio" class="col-span-6 sm:col-span-3 mb-4">
 
-              <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                <div class="sm:flex sm:items-start">
-                  <div
-                    class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-yellow-100 sm:mx-0 sm:h-10 sm:w-10">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                      stroke="currentColor" class="w-6 h-6">
-                      <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
-                    </svg>
+              <div v-if="resultado_reglas" class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
 
+                <div class="overflow-hidden bg-white shadow sm:rounded-lg">
+                  <div class="px-4 py-5 sm:px-6">
+                    <h3 class="text-lg font-medium leading-6 text-gray-900">Información</h3>
+                    <p class="mt-1 max-w-2xl text-sm text-gray-500">Resultado de condiciones de aplicación de la vacuna.
+                    </p>
                   </div>
-                  <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                    <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-title">Información sobre la vacuna
-                      a
-                      aplicar
-                    </h3>
-                    <div class="mt-2">
-                      <p class="text-sm text-gray-500">
-                        Dosis a aplicar: {{ dosis.proxima }}°
-                      </p>
-                      <p v-if="dosis.fecha_ultima" class="text-sm text-gray-500">
-                        Fecha última dosis: {{ new Date(dosis.fecha_ultima).toLocaleDateString() }}
-                      </p>
-                      <p class="text-sm text-gray-500">
-                        Tipo de vacuna: {{ vacuna.tipo }}
-                      </p>
-                      <p class="text-sm text-gray-500">
-                        Edad: {{ getEdad(ciudadano.fecha_hora_nacimiento) }} años
-                      </p>
-                    </div>
+                  <div class="border-t border-gray-200">
+                    <dl>
+                      <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-500">Dosis a aplicar</dt>
+                        <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{{ resultado_reglas.proximaDosis
+                          }}°</dd>
+                      </div>
+                      <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-500">Fecha última dosis</dt>
+                        <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                          {{ resultado_reglas.ultimaDosis > 12 ?
+                          `${resultado_reglas.ultimaDosis/12} años` :
+                          `${resultado_reglas.ultimaDosis} meses` }}</dd>
+                      </div>
+                      <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-500">¿Es personal de salud?</dt>
+                        <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                        {{ JSON.parse(resultado_reglas.personalSalud) ? 'Si' : 'No'}}  
+                        </dd>
+                      </div>
+                      <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-500">¿Es embarazada?</dt>
+                        <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                          {{ JSON.parse(resultado_reglas.embarazada) ? 'Si' : 'No'}}   
+                        </dd>
+                      </div>
+                      <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-500">Edad</dt>
+                        <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                          {{ resultado_reglas.edad > 12 ? `${Math.round(resultado_reglas.edad/12)} años` :
+                          `${resultado_reglas.edad} meses` }}
+                        </dd>
+                      </div>
+                      <div :class="{'bg-emerald-200': JSON.parse(resultado_reglas.resultado),
+                     'bg-red-100': !JSON.parse(resultado_reglas.resultado)}" class="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-500">Resultado</dt>
+                        <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                          La persona {{ !JSON.parse(resultado_reglas.resultado) ? 'no' : '' }} cumple con las reglas para aplicarse la vacuna.
+                        </dd>
+                      </div>
+                    </dl>
                   </div>
                 </div>
               </div>

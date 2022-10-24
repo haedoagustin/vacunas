@@ -17,6 +17,9 @@ export default defineEventHandler(async (event) => {
             vacuna_desarrollada_id (
               vacuna_id (
                 nombre
+              ),
+              laboratorio_id (
+                nombre
               )
             )
           )

@@ -17,17 +17,16 @@ import {
 const route = useRoute();
 const currentRoute = (item) => route.matched[0].path === item.href;
 
-const usuario = await useUsuario()
+const usuario = await useUsuario();
 
 const navigation = [
   { name: "Inicio", href: "/", roles: ["any", "admin"] },
-  { name: "Vacunas", href: "/vacunas", roles: ["admin"] },
+  { name: "Vacunas", href: "/vacunas", roles: ["admin",'operador nacional'] },
   {
     name: "Vacunas desarrolladas",
     href: "/vacunas-desarrolladas",
-    roles: ["admin"],
+    roles: ["admin", 'operador nacional'],
   },
-  { name: "Laboratorios", href: "/laboratorios", roles: ["admin"] },
   { name: "Compras", href: "/compras", roles: ["operador nacional", "admin"] },
   {
     name: "Distribución",
@@ -37,8 +36,10 @@ const navigation = [
   {
     name: "Vacunación",
     href: "/vacunacion",
-    roles: ["vacunador", "admin"],
-  }
+    roles: ["vacunador", "admin", 'analista provincial'],
+  },
+  { name: "Laboratorios", href: "/laboratorios", roles: ["admin", 'operador nacional'] },
+  { name: "Usuarios", href:"/usuarios", roles:["admin"] }
 ];
 
 const { auth } = useSupabaseClient();
@@ -71,7 +72,7 @@ const logout = async () => {
           <div class="hidden sm:ml-6 sm:block">
             <div class="flex space-x-4">
               <div v-for="item in navigation">
-                <NuxtLink v-if="item.roles.includes(usuario?.rol)" :key="item.name" :to="item.href" :class="[
+                <NuxtLink v-if="item.roles.includes('any') || item.roles.includes(usuario?.rol)" :key="item.name" :to="item.href" :class="[
                   currentRoute(item)
                     ? 'bg-gray-900 text-white'
                     : 'text-gray-300 hover:bg-gray-700 hover:text-white',
