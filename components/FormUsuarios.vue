@@ -1,6 +1,6 @@
 <script setup>
 const client = useSupabaseClient();
-
+const emit = defineEmits(['submit-usuario'])
 const usuario = {
   nombre: ref(""),
   apellido: ref(""),
@@ -39,7 +39,7 @@ const submitForm = async () =>{
             body: formData
         })
 
-        $emit("submit-usuario");
+        emit("submit-usuario");
         loading.value = false;
     } catch (err) {
         console.log("Algo salio mal creando el usuario:", err);
