@@ -59,7 +59,7 @@ const logout = async () => {
           <!-- Mobile menu button-->
           <DisclosureButton
             class="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
-            <span class="sr-only">Open main menu</span>
+            <span class="sr-only">Abrir menú principal</span>
             <Bars3Icon v-if="!open" class="block h-6 w-6" aria-hidden="true" />
             <XMarkIcon v-else class="block h-6 w-6" aria-hidden="true" />
           </DisclosureButton>
@@ -69,8 +69,8 @@ const logout = async () => {
             <img src="/img/logo.svg" class="block h-8 w-auto lg:hidden" />
             <img src="/img/logo.svg" class="hidden h-8 w-auto lg:block" />
           </div>
-          <div class="hidden sm:ml-6 sm:block">
-            <div class="flex space-x-4">
+          <div class="hidden md:ml-6 md:block sm:ml-6 sm:block">
+            <div class="flex space-x-2">
               <div v-for="item in navigation">
                 <NuxtLink v-if="item.roles.includes('any') || item.roles.includes(usuario?.rol)" :key="item.name" :to="item.href" :class="[
                   currentRoute(item)
