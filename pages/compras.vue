@@ -30,6 +30,7 @@ const show = () => {
 <template>
   <NuxtLayout>
     <template #page-title> Compras </template>
+
     <div class="mb-4 shadow-md">
       <label class="block text-gray-700 text-sm font-bold mb-2" for="tipo">
         Funciones de compra

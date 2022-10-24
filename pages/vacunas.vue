@@ -7,36 +7,33 @@ useHead({
 });
 
 const formVacuna = ref(false);
-
-const showForm = () => {
-  formVacuna.value = !formVacuna.value;
-};
 </script>
 
 <template>
   <NuxtLayout>
     <template #page-title> Vacunas </template>
 
+    <template #page-actions>
+      <PageActions v-model="formVacuna">
+        <template #main-label>Nueva vacuna</template>
+        <template #back-label>Volver</template>
+      </PageActions>
+    </template>
+
     <div class="flex flex-col ga-10">
-      <div class="flex flex-col content-center w-200px" v-if="formVacuna">
+      <div v-if="formVacuna" class="flex flex-col content-center w-200px" >
         <h1 class="text-2xl font-extrabold dark:text-white">
           Formulario de alta de vacunas
         </h1>
-        <FormVacunas @submit-vacuna="showForm"></FormVacunas>
+        <FormVacunas @submit-vacuna="formVacuna = true" />
       </div>
-      <div class="flex flex-col content-center" v-if="!formVacuna">
+      <div v-else class="flex flex-col content-center">
         <div class="flex justify-between">
           <h1 class="text-2xl font-extrabold dark:text-white">
             Lista de vacunas
           </h1>
-          <button
-            @click="showForm"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          >
-            Dar de alta vacuna
-          </button>
         </div>
-        <ListVacunas></ListVacunas>
+        <ListVacunas />
       </div>
     </div>
   </NuxtLayout>

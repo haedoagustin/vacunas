@@ -21,7 +21,7 @@ const usuario = await useUsuario();
 
 const navigation = [
   { name: "Inicio", href: "/", roles: ["any", "admin"] },
-  { name: "Vacunas", href: "/vacunas", roles: ["admin",'operador nacional'] },
+  { name: "Vacunas", href: "/vacunas", roles: ["admin", 'operador nacional'] },
   {
     name: "Vacunas desarrolladas",
     href: "/vacunas-desarrolladas",
@@ -39,7 +39,7 @@ const navigation = [
     roles: ["vacunador", "admin", 'analista provincial'],
   },
   { name: "Laboratorios", href: "/laboratorios", roles: ["admin", 'operador nacional'] },
-  { name: "Usuarios", href:"/usuarios", roles:["admin"] }
+  { name: "Usuarios", href: "/usuarios", roles: ["admin"] }
 ];
 
 const { auth } = useSupabaseClient();
@@ -72,17 +72,19 @@ const logout = async () => {
           <div class="hidden md:ml-6 md:block sm:ml-6 sm:block">
             <div class="flex space-x-2">
               <div v-for="item in navigation">
-                <NuxtLink v-if="item.roles.includes('any') || item.roles.includes(usuario?.rol)" :key="item.name" :to="item.href" :class="[
-                  currentRoute(item)
-                    ? 'bg-gray-900 text-white'
-                    : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                  'px-3 py-2 rounded-md text-sm font-medium',
-                ]" :aria-current="currentRoute(item) ? 'page' : undefined">{{ item.name }}</NuxtLink>
+                <NuxtLink v-if="item.roles.includes('any') || item.roles.includes(usuario?.rol)" :key="item.name"
+                  :to="item.href" :class="[
+                    currentRoute(item)
+                      ? 'bg-gray-900 text-white'
+                      : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                    'px-3 py-2 rounded-md text-sm font-medium',
+                  ]" :aria-current="currentRoute(item) ? 'page' : undefined">{{ item.name }}</NuxtLink>
               </div>
             </div>
           </div>
         </div>
         <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+
           <!-- Profile dropdown -->
           <Menu as="div" class="relative ml-3 bg-gray-800">
             <div>
@@ -98,6 +100,14 @@ const logout = async () => {
               leave-to-class="transform opacity-0 scale-95">
               <MenuItems
                 class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <MenuItem v-slot="{ active }">
+                <button :class="[
+                  active ? 'bg-gray-100' : '',
+                  'w-full block px-4 py-2 text-sm text-gray-700',
+                ]">
+                  {{ usuario.nombre }}
+                </button>
+                </MenuItem>
                 <MenuItem v-slot="{ active }">
                 <button @click="logout" :class="[
                   active ? 'bg-gray-100' : '',
