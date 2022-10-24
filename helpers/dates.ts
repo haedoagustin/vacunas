@@ -9,11 +9,26 @@ const getNewDate = ([year, month, day]: Array<string>) =>
   new Date(+year, +month - 1, +day);
 /**
  *
- * @param {*} date En formato "YYYY/MM/DD"
+ * @param {*} date En formato "YYYY-MM-DD"
  * @returns Un objecto de tipo Date
  */
 export const formatDate = (date) =>
-  date ? getNewDate(date.split("/")) : ultimo_dia_del_mes;
+  date ? getNewDate(date.split("-")) : ultimo_dia_del_mes;
+/**
+ *
+ * @param {*} monthIndex En formato numérico
+ * @returns Un objecto de tipo Date
+ */
+export const getMonth = function (monthIndex) {
+  var objDate = new Date();
+  objDate.setDate(1);
+  objDate.setMonth(monthIndex - 1);
+
+  var locale = "es",
+    month = objDate.toLocaleString(locale, { month: "long" });
+
+  return month;
+};
 
 const getNewDateTime = ([
   day,

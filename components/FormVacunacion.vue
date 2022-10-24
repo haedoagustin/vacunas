@@ -34,7 +34,7 @@ watch(vacuna, async () => {
   vacuna_desarrollada.value = null;
   if (vacuna.value) {
     if (vacuna.value.inhabilitada) {
-      error.value = "La pandemia no está activa, no puede aplicar vacunas.";
+      error.value = vacuna.value.mensaje_error;
     } else {
       error.value = null
       try {
@@ -159,39 +159,45 @@ const registrarVacunacion = async () => {
                       <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt class="text-sm font-medium text-gray-500">Dosis a aplicar</dt>
                         <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{{ resultado_reglas.proximaDosis
-                          }}°</dd>
+                        }}°</dd>
                       </div>
                       <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt class="text-sm font-medium text-gray-500">Fecha última dosis</dt>
                         <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                           {{ resultado_reglas.ultimaDosis > 12 ?
-                          `${resultado_reglas.ultimaDosis/12} años` :
-                          `${resultado_reglas.ultimaDosis} meses` }}</dd>
+                              `${resultado_reglas.ultimaDosis / 12} años` :
+                              `${resultado_reglas.ultimaDosis} meses`
+                          }}</dd>
                       </div>
                       <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt class="text-sm font-medium text-gray-500">¿Es personal de salud?</dt>
                         <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                        {{ JSON.parse(resultado_reglas.personalSalud) ? 'Si' : 'No'}}  
+                          {{ JSON.parse(resultado_reglas.personalSalud) ? 'Si' : 'No' }}
                         </dd>
                       </div>
                       <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt class="text-sm font-medium text-gray-500">¿Es embarazada?</dt>
                         <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                          {{ JSON.parse(resultado_reglas.embarazada) ? 'Si' : 'No'}}   
+                          {{ JSON.parse(resultado_reglas.embarazada) ? 'Si' : 'No' }}
                         </dd>
                       </div>
                       <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt class="text-sm font-medium text-gray-500">Edad</dt>
                         <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                          {{ resultado_reglas.edad > 12 ? `${Math.round(resultado_reglas.edad/12)} años` :
-                          `${resultado_reglas.edad} meses` }}
+                          {{ resultado_reglas.edad > 12 ? `${Math.round(resultado_reglas.edad / 12)} años` :
+                              `${resultado_reglas.edad} meses`
+                          }}
                         </dd>
                       </div>
-                      <div :class="{'bg-emerald-200': JSON.parse(resultado_reglas.resultado),
-                     'bg-red-100': !JSON.parse(resultado_reglas.resultado)}" class="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                      <div :class="{
+                        'bg-emerald-200': JSON.parse(resultado_reglas.resultado),
+                        'bg-red-100': !JSON.parse(resultado_reglas.resultado)
+                      }"
+                        class="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt class="text-sm font-medium text-gray-500">Resultado</dt>
                         <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                          La persona {{ !JSON.parse(resultado_reglas.resultado) ? 'no' : '' }} cumple con las reglas para aplicarse la vacuna.
+                          La persona {{ !JSON.parse(resultado_reglas.resultado) ? 'no' : '' }} cumple con las reglas
+                          para aplicarse la vacuna.
                         </dd>
                       </div>
                     </dl>
