@@ -7,9 +7,10 @@
         <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
           <slot name="page-title">Dashboard</slot>
         </h2>
+        <slot name="page-subheader"></slot>
       </div>
       <div class="mt-5 flex lg:mt-0 lg:ml-4">
-          <slot name="page-actions"></slot>
+        <slot name="page-actions"></slot>
       </div>
     </div>
 

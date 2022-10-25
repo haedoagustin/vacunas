@@ -10,7 +10,7 @@ useHead({
   ],
   htmlAttrs: {
     lang: 'es',
-    class: "h-full bg-gray-50"
+    class: "h-full bg-white"
   },
   bodyAttrs: {
     class: "h-full"
