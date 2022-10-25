@@ -21,24 +21,8 @@ watch(user, () => {
 const loading = ref(false)
 const email = ref('')
 const password = ref('')
-const isSignUp = ref(false)
 
 const redirectTo = ref((process.client) ? `${window.location.origin}/confirm` : null)
-
-const signUp = async () => {
-  try {
-    loading.value = true
-    const { user, error } = await auth.signUp({
-      email: email.value,
-      password: password.value,
-    }, { redirectTo: redirectTo.value })
-    if (user) alert('Consultá tu casilla de correo para obtener el link')
-  } catch (error) {
-    alert(error.error_description || error.message)
-  } finally {
-    loading.value = false
-  }
-}
 
 const login = async (provider) => {
   try {
@@ -46,14 +30,13 @@ const login = async (provider) => {
     const { error } = await auth.signIn(provider, { redirectTo: redirectTo.value })
     if (error) throw error
   } catch (error) {
-    alert(error.error_description || error.message)
+    throw createError({ statusCode: 404, statusMessage: error.error_description || error.message })
   } finally {
     loading.value = false
   }
 }
 
 const loginWithEmail = async () => await login({ email: email.value, password: password.value })
-
 </script>
 
 <template>
@@ -65,7 +48,7 @@ const loginWithEmail = async () => await login({ email: email.value, password: p
           <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">Iniciar sesión</h2>
         </div>
 
-        <form class="mt-8 space-y-6" @submit.prevent="(() => isSignUp ? signUp() : loginWithEmail())">
+        <form class="mt-8 space-y-6" @submit.prevent="loginWithEmail()">
           <div class="-space-y-px rounded-md shadow-sm">
             <div>
               <label for="email-address" class="sr-only">Dirección de email</label>
@@ -91,22 +74,11 @@ const loginWithEmail = async () => await login({ email: email.value, password: p
                 <LockClosedIcon v-else class="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" aria-hidden="true" />
               </span>
 
-              <span v-if="isSignUp">
-                Registrarse
-              </span>
-              <span v-else>
+              <span>
                 Iniciar sesión
               </span>
             </button>
           </div>
-
-          <div>
-            <button class="font-medium text-indigo-600 hover:text-indigo-500" @click.prevent="isSignUp = !isSignUp">
-              <span v-if="isSignUp"> ¿Tenés una cuenta? Iniciar sesión </span>
-              <span v-else> Registrarse </span>
-            </button>
-          </div>
-
         </form>
       </div>
     </div>
