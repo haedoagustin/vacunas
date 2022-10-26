@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { getDocs } from "../assets/crud";
+import ErrorAlert from "../components/ErrorAlert.vue";
 
 useHead({
   title: "Distribución",
@@ -17,13 +18,19 @@ const usuario = ref({});
 
 const loading = ref(false);
 const vacunaSelected = ref("");
+const jurisdiccionSelected = ref(0);
+const cantidad = ref(0);
 
-const envio = {
-  jurisdiccion_id: 0,
-  cantidad: 0,
-};
+// const envio = {
+//   jurisdiccion_id: 0,
+//   cantidad: 0,
+// };
 
 const getStock = () => {
+  // utilizamos los lotes qe tengan stock para enviar
+  const lotesDisponibles = lotes.value.filter(
+    (lote) => lote.cantidad_disponibles > 0
+  );
   let vacunaDesarrolladaId = vacunasDesarrolladas.value
     .filter((vac) => vac.vacuna_id == vacunaSelected.value)
     .map((vac) => vac.id);
@@ -31,8 +38,7 @@ const getStock = () => {
   vacunaDesarrolladaId = !vacunaDesarrolladaId.length
     ? [vacunaDesarrolladaId]
     : vacunaDesarrolladaId;
-  console.log(vacunaDesarrolladaId);
-  const stock = lotes.value
+  const stock = lotesDisponibles
     .filter(
       (lote) =>
         vacunaDesarrolladaId.includes(lote.vacuna_desarrollada_id) &&
@@ -41,6 +47,32 @@ const getStock = () => {
     .map((lote) => lote.cantidad_disponibles)
     .reduce((cantAnterior, cantActual) => cantAnterior + cantActual, 0);
 
+  return stock;
+};
+
+const getStockJuridisccional = () => {
+  console.log(jurisdiccionSelected.value);
+  if (jurisdiccionSelected.value == 0) return;
+  let vacunaDesarrolladaId = vacunasDesarrolladas.value
+    .filter((vac) => vac.vacuna_id == vacunaSelected.value)
+    .map((vac) => vac.id);
+  vacunaDesarrolladaId = !vacunaDesarrolladaId.length
+    ? [vacunaDesarrolladaId]
+    : vacunaDesarrolladaId;
+
+  const stock = envios.value
+    .filter((envio) => envio.jurisdiccion_id == jurisdiccionSelected.value)
+    .map((envio) => {
+      envio.lote = lotes.value.find((lote) => lote.id == envio.lote_id);
+      return envio;
+    })
+    .filter(
+      (envio) =>
+        vacunaDesarrolladaId.includes(envio.lote.vacuna_desarrollada_id) &&
+        !envio.lote.vencido
+    )
+    .map((envio) => envio.cantidad_disponible)
+    .reduce((cantAnterior, cantActual) => cantAnterior + cantActual, 0);
   return stock;
 };
 
@@ -63,7 +95,7 @@ const realizarEnvio = async (e) => {
   );
 
   // calculamos cuantos lotes tenemos que enviar
-  let cantidadRestante = envio.cantidad;
+  let cantidadRestante = cantidad.value;
   await Promise.all(
     lotesEnvio.map(async (lote) => {
       if (cantidadRestante < 0) return;
@@ -93,7 +125,7 @@ const realizarEnvio = async (e) => {
   envios = envios.map((e) => {
     return {
       lote_id: e.loteId,
-      jurisdiccion_id: envio.jurisdiccion_id,
+      jurisdiccion_id: jurisdiccionSelected.value,
       cantidad: e.cant,
       cantidad_disponible: e.cant,
       usuario_id: usuario.value,
@@ -129,9 +161,7 @@ const realizarEnvio = async (e) => {
   });
 
   // utilizamos los lotes qe tengan stock para enviar
-  console.log(lotes.value);
-  lotes.value = lotes.value.filter((lote) => lote.cantidad_disponibles > 0);
-  console.log(lotes.value);
+  // lotes.value = lotes.value.filter((lote) => lote.cantidad_disponibles > 0);
   // ordenamos los lotes por fecha de vencimiento
   lotes.value.sort((lotea, loteb) => {
     const datea = new Date(lotea.fecha_vencimiento).getTime();
@@ -143,6 +173,7 @@ const realizarEnvio = async (e) => {
   });
 
   console.log(lotes.value);
+
   loading.value = false;
 })();
 </script>
@@ -168,9 +199,16 @@ const realizarEnvio = async (e) => {
       </select>
     </div>
     <div v-if="vacunaSelected">
-      <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+      <p
+        v-if="getStock() > 0"
+        class="mb-3 font-normal text-gray-700 dark:text-gray-400"
+      >
         Stock actual: {{ getStock() }}
       </p>
+      <ErrorAlert
+        v-if="getStock() < 1"
+        error="No hay stock de esta vacuna"
+      ></ErrorAlert>
     </div>
     <form
       v-if="vacunaSelected && getStock() != 0"
@@ -189,7 +227,7 @@ const realizarEnvio = async (e) => {
           placeholder="jurisdiccion"
           id="jurisdiccion"
           required
-          v-model="envio.jurisdiccion_id"
+          v-model="jurisdiccionSelected"
         >
           <option
             v-for="jurisdiccion in jurisdicciones"
@@ -199,6 +237,11 @@ const realizarEnvio = async (e) => {
             {{ jurisdiccion.nombre }}
           </option>
         </select>
+        <div v-if="jurisdiccionSelected">
+          <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+            Stock actual: {{ getStockJuridisccional() }}
+          </p>
+        </div>
       </div>
       <div class="mb-4 shadow-md">
         <label
@@ -213,12 +256,13 @@ const realizarEnvio = async (e) => {
           id="cantidad"
           placeholder="cantidad"
           required
-          v-model="envio.cantidad"
+          v-model="cantidad"
         />
       </div>
       <button
         href="#"
         class="w-full flex justify-center inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        v-if="getStock() >= cantidad"
       >
         <LoadingSpin
           v-if="loading"
@@ -227,6 +271,10 @@ const realizarEnvio = async (e) => {
         />
         <span v-if="!loading"> Realizar envio </span>
       </button>
+      <ErrorAlert
+        v-if="getStock() < cantidad"
+        error="No hay stock suficiente para realizar este envio"
+      ></ErrorAlert>
     </form>
   </NuxtLayout>
 </template>
