@@ -15,11 +15,9 @@
     </div>
 
     <main class="flex justify-center">
-      <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-        <div class="sm:px-0">
-          <div class="min-h-full rounded-lg border-4 border-dashed border-gray-200 p-14">
-            <slot />
-          </div>
+      <div class="min-w-full py-6 sm:px-6 lg:px-8">
+        <div class="min-h-full">
+          <slot />
         </div>
       </div>
     </main>

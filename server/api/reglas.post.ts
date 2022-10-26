@@ -6,9 +6,7 @@ import { serverSupabaseClient } from "#supabase/server";
 export default defineEventHandler(async (event) => {
   const client = serverSupabaseClient(event);
   const { vacuna, ciudadano } = await useBody(event);
-
-  ciudadano.embarazada = true
-
+  
   try {
     let { data, count } = await client
       .from("vacunaciones")
