@@ -24,7 +24,7 @@ export default defineEventHandler(async (event) => {
       vacuna.inhabilitada = true;
       vacuna.mensaje_error =
         vacuna.tipo == "Pandemica"
-          ? `La pandemia no está activa (inicio ${fecha_inicio.toLocaleDateString()}, fin ${fecha_fin.toLocaleDateString()}), no puede aplicar vacunas`
+          ? `La pandemia no está activa (inicio ${fecha_inicio.toLocaleDateString()}, fin ${fecha_fin.toLocaleDateString()}).`
           : `El período de vacunación de la vacuna estacional seleccionada no ha iniciado aún (${getMonth(
               inicio
             )} a ${getMonth(fin)})`;

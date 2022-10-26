@@ -1,37 +1,58 @@
 <script lang="ts" setup>
-import { getDocs, getVacunasDesarrolladas } from "../assets/crud";
-import CardCompra from "../components/CardCompra.vue";
-import CardCompraPendiente from "../components/CardCompraPendiente.vue";
+import FormCompra from '@/components/FormCompra.vue'
+import FormPagoCompra from '~/components/FormPagoCompra.vue'
+import FormEntregaCompra from '~/components/FormEntregaCompra.vue'
 
 useHead({
   title: "Compras",
 });
 
-const client = useSupabaseClient();
+const compra = ref()
 
-let vacunas = ref([]);
-let vacunasDesarrolladas = ref([]);
-let compras = ref([]);
+const iniciarCompra = (nuevaCompra) => {
+  compra.value = nuevaCompra
+  currentTab.value = 'Pagos'
+}
 
-let vacunaSelect = ref("");
-let tipoCompra = ref("");
+const currentTab = ref('Compras')
 
-(async () => {
-  vacunasDesarrolladas.value = await getVacunasDesarrolladas(client);
-  vacunas.value = (await getDocs(client, "vacunas")).data;
-  compras.value = (await getDocs(client, "compras")).data;
-})();
-
-const show = () => {
-  console.log("hola");
-};
+const tabs = {
+  'Compras': FormCompra,
+  'Pagos': FormPagoCompra,
+  'Entregas': FormEntregaCompra
+}
 </script>
 
 <template>
   <NuxtLayout>
     <template #page-title> Compras </template>
 
-    <div class="mb-4 shadow-md">
+    <section aria-labelledby="products-heading" class="pb-24">
+      <h2 id="products-heading" class="sr-only">Products</h2>
+
+      <div class="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
+        <!-- Filters -->
+        <div class="block">
+          <h3 class="sr-only">Categories</h3>
+          <ul role="list" class="space-y-4 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900">
+            <li v-for="(_, tab) in tabs" :key="tab">
+              <button @click="currentTab = tab">{{ tab }}</button>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Product grid -->
+        <div class="col-span-3 bg-gray-100 p-7">
+          <!-- Replace with your content -->
+          <div class="h-fit">
+            <component :is="tabs[currentTab]" @iniciar-compra="iniciarCompra" class="tab"></component>
+          </div>
+          <!-- /End replace -->
+        </div>
+      </div>
+    </section>
+
+    <!-- <div class="mb-4 shadow-md">
       <label class="block text-gray-700 text-sm font-bold mb-2" for="tipo">
         Funciones de compra
       </label>
@@ -82,6 +103,6 @@ const show = () => {
         :key="compra.id"
         :compra="compra"
       ></CardCompraPendiente>
-    </div>
+    </div> -->
   </NuxtLayout>
 </template>
