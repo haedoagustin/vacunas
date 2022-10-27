@@ -1,6 +1,6 @@
 <script setup>
 import { toCurrency } from "~/helpers/numbers";
-const emit = defineEmits(["iniciar-compra"]);
+const emit = defineEmits(["inicio-completado"]);
 
 onMounted(() => {
   refreshNuxtData('vacunas')
@@ -14,6 +14,7 @@ const error = ref()
 
 const cantidad = ref(0);
 const loading = ref(false)
+const precio_total = computed(() => cantidad.value * vacuna_desarrollada.value.precio)
 
 watch(vacuna, async () => {
   error.value = null;
@@ -38,8 +39,9 @@ const realizarCompra = async (e) => {
   if (loading.value) return;
   loading.value = true;
   try {
-    let data = await $fetch("/api/compra", { method: 'post', body: { vacuna_desarrollada: vacuna_desarrollada.value, cantidad: cantidad.value } });
-    emit("iniciar-compra", data)
+    let compra = await $fetch("/api/compra", { method: 'post', body: { vacuna_desarrollada: vacuna_desarrollada.value, precio_total: precio_total.value } });
+    let lote = await $fetch("/api/lote", { method: 'post', body: { compra, vacuna_desarrollada: vacuna_desarrollada.value, cantidad: cantidad.value } });
+    if (lote) emit("inicio-completado")
   } catch (e) {
     error.value = e
   }
@@ -173,9 +175,9 @@ const realizarCompra = async (e) => {
 
               <div class="grid grid-cols-6 gap-6">
                 <div class="col-span-6 sm:col-span-3">
-                  <label for="first-name" class="block text-sm font-medium text-gray-700">Precio final</label>
-                  <input readonly disabled :value="toCurrency(cantidad * vacuna_desarrollada.precio)" type="text"
-                    name="first-name" id="first-name" autocomplete="given-name"
+                  <label for="first-name" class="block text-sm font-medium text-gray-700">Precio total</label>
+                  <input readonly disabled :value="toCurrency(precio_total)" type="text" name="first-name"
+                    id="first-name" autocomplete="given-name"
                     class="mt-1 block w-full appearance-none rounded-md rounded-t-md border shadow-sm border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm" />
                 </div>
               </div>

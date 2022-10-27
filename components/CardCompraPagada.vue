@@ -1,26 +1,33 @@
 <script setup>
-import { toCurrency } from "~/helpers/numbers";
 const { compra } = defineProps(["compra"]);
-const emit = defineEmits(["pago-compra"])
+const emit = defineEmits(["entrega-compra"])
 
 const lote = compra.lotes[0];
 
 const loading = ref(false);
 const error = ref()
 
-const pagarCompra = async () => {
+const entregarCompra = async () => {
   if (loading.value) return;
   loading.value = true;
   try {
-    const data = await $fetch('/api/compra', {
+    let compra_updated = await $fetch('/api/compra', {
       method: 'put', body: {
         compra,
         updated_data: {
-          estado: "pagada"
+          estado: "entregada"
         }
       }
     })
-    if (data) emit("pago-compra")
+    let lote_updated = await $fetch('/api/lote', {
+      method: 'put', body: {
+        lote,
+        updated_data: {
+          cantidad_disponibles: lote.cantidad
+        }
+      }
+    })
+    if (lote_updated) emit("entrega-compra")
   } catch (e) {
     error.value = e
   }
@@ -42,16 +49,13 @@ const pagarCompra = async () => {
       Fecha de la compra: {{ new Date(compra.created_at).toLocaleDateString() }}
     </p>
     <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-      Cantidad de vacunas en la compra: {{ lote.cantidad }}
+      Fecha de entrega: {{ compra.fecha_entrega }}
     </p>
-    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-      Precio final de la compra: {{ toCurrency(compra.precio_total) }}
-    </p>
-    <button @click="pagarCompra"
+    <button @click="entregarCompra"
       class="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
       <LoadingSpin v-if="loading" class="animate-spin h-5 w-5 text-indigo-500 group-hover:text-indigo-400 cursor-wait"
         aria-hidden="true" />
-      Pagar compra
+      Entregar compra
     </button>
 
     <ErrorAlert v-if="error" :error="error" />
