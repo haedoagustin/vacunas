@@ -4,13 +4,12 @@ const emit = defineEmits(["entrega-completada"])
 onMounted(() => {
   refreshNuxtData('compras')
 });
+const { data: compras, refresh } = await useAsyncData('compras', () => $fetch('/api/compra', { query: { estado: 'pagada' } }))
 
 const actualizarListado = () => {
   refresh()
-  if (!data.length) emit("entrega-completada")
+  if (!compras.length) emit("entrega-completada")
 }
-
-const { data: compras, refresh } = await useAsyncData('compras', () => $fetch('/api/compra', { query: { estado: 'pagada' } }))
 </script>
 
 <template>
