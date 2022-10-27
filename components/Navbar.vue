@@ -36,7 +36,7 @@ const stock = [
     description: "Visualizá, detalladamente el stock provincial",
     href: "/stock",
     icon: Squares2X2Icon,
-    roles: ["operador nacional"],
+    roles: ["analista provincial"],
   },
 ];
 
