@@ -23,7 +23,16 @@ export default defineEventHandler(async (event) => {
 
     let edad = getEdad(ciudadano.fecha_hora_nacimiento);
 
-    console.log(edad);
+    let { data: reglas_db } = await client
+      .from("reglas")
+      .select("condicion")
+      .eq("vacuna_id", vacuna.id)
+      .eq("dosis", proximaDosis)
+      .single();
+
+    if (!reglas_db) {
+      throw "Error: no hay reglas cargadas para la vacuna o dosis.";
+    }
 
     let ultimaDosis =
       count != 0 ? monthDiff(new Date(data[0].created_at), new Date()) : null;
@@ -36,14 +45,12 @@ export default defineEventHandler(async (event) => {
       embarazada: ciudadano.embarazada.toString(),
     };
 
-    let idRegla = `${vacuna.nombre.replace(" ", "-")}:${proximaDosis}-dosis`;
-
     brie.setup({
       data: datos,
-      features: reglas[idRegla],
+      features: reglas_db.condicion,
     });
 
-    const evaluacion = brie.getAll(idRegla);
+    const evaluacion = brie.getAll();
 
     return {
       ...datos,
