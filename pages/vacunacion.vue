@@ -2,26 +2,23 @@
 useHead({
   title: "Vacunación"
 })
-const formVacunacion = ref(false);
+
+const usuario = await useUsuario()
+
+const canVacunar = computed(() => usuario.rol === 'vacunador')
+
 </script>
     
 <template>
   <NuxtLayout>
     <template #page-title> Vacunaciones </template>
 
-    <template #page-actions>
-      <PageActions v-model="formVacunacion">
-        <template #main-label>Nueva vacunación</template>
-        <template #back-label>Volver</template>
-      </PageActions>
-    </template>
-
     <div class="flex flex-col ga-10">
-      <div v-if="formVacunacion" class="flex flex-col content-center">
+      <div v-if="canVacunar" class="flex flex-col content-center">
         <h1 class="text-2xl mb-4 font-extrabold dark:text-white">
           Nueva vacunación
         </h1>
-        <FormVacunacion @submit-vacunacion="formVacunacion = true" />
+        <FormVacunacion />
       </div>
       <div v-else class="flex flex-col content-center">
         <div class="flex justify-between">
