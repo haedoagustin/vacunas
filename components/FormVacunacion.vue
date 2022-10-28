@@ -149,9 +149,11 @@ const registrarVacunacion = async () => {
               <div v-if="resultado_reglas" class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
 
                 <div class="overflow-hidden bg-white shadow sm:rounded-lg">
+
                   <div class="px-4 py-5 sm:px-6">
-                    <h3 class="text-lg font-medium leading-6 text-gray-900">Información</h3>
-                    <p class="mt-1 max-w-2xl text-sm text-gray-500">Resultado de condiciones de aplicación de la vacuna.
+                    <h3 class="text-lg font-medium leading-6 text-gray-900">Condiciones de aplicación</h3>
+                    <p class="mt-1 max-w-2xl text-sm text-gray-500">Información a tener en cuenta para la aplicación de
+                      la vacuna.
                     </p>
                   </div>
                   <div class="border-t border-gray-200">
@@ -166,7 +168,7 @@ const registrarVacunacion = async () => {
                         <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                           {{ resultado_reglas.ultimaDosis > 12 ?
                               `${resultado_reglas.ultimaDosis / 12} años` :
-                              `${resultado_reglas.ultimaDosis} meses`
+                              `${resultado_reglas.ultimaDosis ?? 0} meses`
                           }}</dd>
                       </div>
                       <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -189,27 +191,43 @@ const registrarVacunacion = async () => {
                           }}
                         </dd>
                       </div>
-                      <div :class="{
-                        'bg-emerald-200': JSON.parse(resultado_reglas.resultado),
-                        'bg-red-100': !JSON.parse(resultado_reglas.resultado)
-                      }"
-                        class="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-500">Resultado</dt>
-                        <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                          La persona {{ !JSON.parse(resultado_reglas.resultado) ? 'no' : '' }} cumple con las reglas
-                          para aplicarse la vacuna.
-                        </dd>
-                      </div>
                     </dl>
+                  </div>
+
+                  <div v-if="resultado_reglas.resultado" class="bg-emerald-200 px-4 py-5 sm:px-6">
+                    <h3 class="text-lg font-medium leading-6 text-gray-900">Resultado</h3>
+                    <p class="mt-1 max-w-2xl text-sm text-gray-500">El ciudadano cumple con las reglas para la
+                      aplicación de la vacuna seleccionada.
+                    </p>
+                  </div>
+
+                  <div v-else class="bg-red-100 px-4 py-5 sm:px-6">
+                    <h3 class="text-lg font-medium leading-6 text-gray-900">Resultado</h3>
+                    <p class="mt-1 max-w-2xl text-sm text-gray-500">Las siguientes reglas no pasan las condiciones para
+                      la aplicación de la vacuna seleccionada.
+                    </p>
+
+                    <div v-if="!resultado_reglas.resultado && resultado_reglas.no_pasaron.length"
+                      class="border-t border-gray-200">
+                      <dl>
+                        <div v-for="regla in resultado_reglas.no_pasaron" :key="regla"
+                          class="bg-red-100 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                          <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                            {{ regla }}
+                          </dd>
+                        </div>
+                      </dl>
+                    </div>
+
                   </div>
                 </div>
               </div>
-
-              <button href="#" type="submit"
-                class="w-full flex justify-center items-center py-2 px-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                Registrar vacunación
-              </button>
             </div>
+
+            <button href="#" type="submit"
+              class="w-full flex justify-center items-center py-2 px-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+              Registrar vacunación
+            </button>
           </div>
         </div>
       </div>

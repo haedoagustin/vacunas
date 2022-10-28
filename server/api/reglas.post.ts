@@ -6,7 +6,7 @@ import { serverSupabaseClient } from "#supabase/server";
 export default defineEventHandler(async (event) => {
   const client = serverSupabaseClient(event);
   const { vacuna, ciudadano } = await useBody(event);
-  
+
   try {
     let { data, count } = await client
       .from("vacunaciones")
@@ -23,12 +23,14 @@ export default defineEventHandler(async (event) => {
 
     let edad = getEdad(ciudadano.fecha_hora_nacimiento);
 
+    console.log(edad);
+
     let ultimaDosis =
       count != 0 ? monthDiff(new Date(data[0].created_at), new Date()) : null;
 
     const datos = {
       proximaDosis,
-      edad,  // En meses
+      edad, // En meses
       ultimaDosis, // En meses
       personalSalud: ciudadano.personal_salud.toString(),
       embarazada: ciudadano.embarazada.toString(),
@@ -38,13 +40,18 @@ export default defineEventHandler(async (event) => {
 
     brie.setup({
       data: datos,
-      features: reglas,
+      features: reglas[idRegla],
     });
+
+    const evaluacion = brie.getAll(idRegla);
 
     return {
       ...datos,
-      resultado: brie.get(idRegla)
-    }
+      resultado: Object.values(evaluacion).every((result) => result as boolean),
+      no_pasaron: Object.keys(evaluacion).filter(
+        (regla) => !(evaluacion[regla] as boolean)
+      ),
+    };
   } catch (e) {
     throw e;
   }
