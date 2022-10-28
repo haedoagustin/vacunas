@@ -18,7 +18,7 @@ const tabs = {
 
 <template>
   <NuxtLayout>
-    <template #page-title> Compras </template>
+    <template #page-title> Gestión de compras </template>
 
     <section aria-labelledby="products-heading" class="pb-24">
       <div class="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
@@ -27,7 +27,9 @@ const tabs = {
           <h3 class="sr-only">Categories</h3>
           <ul role="list" class="space-y-4 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900">
             <li v-for="(_, tab) in tabs" :key="tab">
-              <button @click="currentTab = tab">{{ tab }}</button>
+              <button
+                :class="[currentTab === tab ? 'text-indigo-600 border-indigo-600' : 'text-gray-900 border-transparent', 'flex-1 whitespace-nowrap border-b-2 py-4 px-1 text-base font-medium']"
+                @click="currentTab = tab">{{ tab }}</button>
             </li>
           </ul>
         </div>
