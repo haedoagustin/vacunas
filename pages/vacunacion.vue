@@ -7,6 +7,10 @@ const usuario = await useUsuario()
 
 const canVacunar = computed(() => usuario.rol === 'vacunador')
 
+const finalizarVacunacion = () => {
+  navigateTo('/');
+}
+
 </script>
     
 <template>
@@ -18,7 +22,7 @@ const canVacunar = computed(() => usuario.rol === 'vacunador')
         <h1 class="text-2xl mb-4 font-extrabold dark:text-white">
           Nueva vacunación
         </h1>
-        <FormVacunacion />
+        <FormVacunacion @submit-vacunacion="finalizarVacunacion" />
       </div>
       <div v-else class="flex flex-col content-center">
         <div class="flex justify-between">
