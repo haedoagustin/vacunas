@@ -13,13 +13,11 @@ import {
   BanknotesIcon,
   Bars3Icon,
   BeakerIcon,
-  BuildingLibraryIcon,
   CogIcon,
   Squares2X2Icon,
-  TruckIcon,
-  XMarkIcon,
-} from "@heroicons/vue/24/outline";
-import { ChevronDownIcon } from "@heroicons/vue/20/solid";
+  TruckIcon
+} from "@heroicons/vue/24/outline/index.js";
+import { ChevronDownIcon } from "@heroicons/vue/20/solid/index.js";
 
 const usuario = await useUsuario();
 
