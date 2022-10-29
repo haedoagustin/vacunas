@@ -48,7 +48,7 @@ const vacunas = [
   },
   {
     name: "Laboratorios",
-    description: "Manejá las vacunas desarrolladas por distintos laboratorios.",
+    description: "Listá y agreá nuevos desarrollores de vacunas.",
     href: "/laboratorios",
     icon: BeakerIcon,
     roles: ["operador nacional"],
