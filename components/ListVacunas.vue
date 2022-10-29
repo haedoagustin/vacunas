@@ -18,6 +18,12 @@ const deleteVacuna = async (id) => {
       .delete()
       .eq("id", id);
 
+    if ((error.code = "23503"))
+      return alert(
+        "La vacuna no puede ser elimianada ya que esta asociada a una vacuna desarrollada"
+      );
+    if (error) return alert("Algo salio mal eliminando la vacuna");
+
     const vac = data[0];
     vacunas.value = vacunas.value.filter((vacuna) => vacuna.id != vac.id);
   } catch (err) {
