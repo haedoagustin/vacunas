@@ -15,7 +15,7 @@ const loadCantidad = async () => {
   // utilizamos solo los lotes que pertenescan a una compra finalizada
   lotes = lotes.filter((lote) => {
     const compra = compras.find((compra) => compra.id == lote.compra_id);
-    return compra?.estado === "entregada";
+    return compra?.estado === "entregada" && !lote.vencido;
   });
 
   console.log(lotes);
