@@ -25,12 +25,7 @@ const selectVacuna = () => {
       </label>
       <select
         class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        id="tipo"
-        placeholder="tipo"
-        required
-        v-model="vacunaSelected"
-        @change="selectVacuna"
-      >
+        id="tipo" placeholder="tipo" required v-model="vacunaSelected" @change="selectVacuna">
         <option v-for="vacuna in vacunas" :key="vacuna.id" :value="vacuna.id">
           {{ vacuna.nombre }}
         </option>
@@ -43,11 +38,7 @@ const selectVacuna = () => {
 
     <div v-if="vacunaSelected && usuario.rol == 'analista provincial'">
       <p>Stock de la provincia de {{ usuario.jurisdiccion.nombre }}</p>
-      <ListStock
-        v-if="vacunaSelected"
-        :vacuna="vacunaSelected"
-        :jurisdiccion="jurisdiccionSelected"
-      ></ListStock>
+      <ListStock v-if="vacunaSelected" :vacuna="vacunaSelected" :jurisdiccion="usuario.jurisdiccion.id"></ListStock>
     </div>
   </NuxtLayout>
 </template>
