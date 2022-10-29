@@ -3,18 +3,19 @@ defineProps(['modelValue'])
 const emit = defineEmits(['update:modelValue'])
 
 const search = ref()
-const error = ref(false)
 
-const { data: ciudadano, pending, refresh, error: errorValue } = useLazyAsyncData(
+onMounted(() => {
+    refreshNuxtData('ciudadano')
+});
+
+const { data: ciudadano, pending, refresh, error } = useLazyAsyncData('ciudadano',
     () => $fetch("/api/persona", { query: { dni: search.value } }));
 
 watch(ciudadano, () => {
-    error.value = false
     if (ciudadano.value)
         emit('update:modelValue', ciudadano.value)
     else
         emit('update:modelValue', null)
-    error.value = errorValue.value
 })
 
 watch(search, (newSearch) => {
