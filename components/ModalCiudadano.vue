@@ -18,7 +18,7 @@ watch(show, () => {
 </script>
 
 <template>
-  <a href="#" @click="show=true" :class="buttonClass">
+  <a href="#" @click="show = true" :class="buttonClass">
     <slot></slot>
   </a>
 
@@ -37,7 +37,7 @@ watch(show, () => {
         <div v-else
           class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
 
-          <button type="button" @click="show=false"
+          <button type="button" @click="show = false"
             class="absolute top-4 right-4 text-gray-400 hover:text-gray-500 sm:top-8 sm:right-6 md:top-6 md:right-6 lg:top-8 lg:right-8">
             <span class="sr-only">Close</span>
             <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -79,7 +79,8 @@ watch(show, () => {
                   </p>
                   <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
                     Fecha y hora de nacimiento: <span class="font-medium">{{ ciudadano.fecha_hora_nacimiento }} ({{
-                    getEdad(ciudadano.fecha_hora_nacimiento) }} años)</span>
+                        Math.round(getEdad(ciudadano.fecha_hora_nacimiento) / 12)
+                    }} años)</span>
                   </p>
                   <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
                     ¿Es personal de salud?: <span class="font-medium">{{ ciudadano.personal_salud ? 'Si' : 'No'
