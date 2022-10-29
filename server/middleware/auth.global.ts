@@ -5,7 +5,7 @@ import {
 
 const permissions = {
   admin: {
-    routes_regexp: new RegExp("^/$|/index*|/usuarios*"),
+    routes_regexp: new RegExp("^/$|/index*|/usuarios*|/api/*"),
   },
   "operador nacional": {
     routes_regexp: new RegExp(
