@@ -11,7 +11,8 @@ const deleteVacuna = async (id) => {
       .delete()
       .eq("id", id);
 
-    if ((error.code = "23503"))
+    console.log(error);
+    if (error?.code == "23503")
       return alert(
         "Esta vacuna desarrolada ya tiene asociado un lote, por lo que no puede ser eliminada"
       );

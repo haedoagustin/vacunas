@@ -19,7 +19,7 @@ const deleteLaboratorio = async (id) => {
       .delete()
       .eq("id", id);
 
-    if ((error.code = "23503"))
+    if (error?.code == "23503")
       return alert(
         "El laboratorio no puede ser elimianada ya que esta asociado a una vacuna desarrollada"
       );
