@@ -6,10 +6,16 @@ let vacunas = ref([]);
 
 const deleteVacuna = async (id) => {
   try {
-    const { data, error } = await supabase
+    const { data, error } = await client
       .from("vacunas_desarrolladas")
       .delete()
       .eq("id", id);
+
+    if ((error.code = "23503"))
+      return alert(
+        "Esta vacuna desarrolada ya tiene asociado un lote, por lo que no puede ser eliminada"
+      );
+    if (error) return alert("Algo salio mal eliminando la vacuna");
 
     const vac = data[0];
     vacunas.value = vacunas.value.filter((vacuna) => vacuna.id != vac.id);
