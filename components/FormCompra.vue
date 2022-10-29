@@ -193,7 +193,7 @@ const realizarCompra = async (e) => {
                     </span>
 
                     <span>
-                      Realizar la compra
+                      Iniciar la compra
                     </span>
                   </button>
 
