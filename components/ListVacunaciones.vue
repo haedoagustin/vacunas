@@ -1,11 +1,15 @@
 <script setup>
-import { getVacunaciones } from "../assets/crud";
-const client = useSupabaseClient();
+onMounted(() => {
+    refreshNuxtData('vacunaciones')
+});
 
-const { data: vacunaciones } = await useAsyncData('vacunaciones', () => getVacunaciones(client))
+const { data: vacunaciones, pending, error } = await useAsyncData('vacunaciones', () => $fetch('/api/vacunacion'))
 </script>
 
 <template>
+
+    <Loading v-if="pending" />
+
     <div class="flex flex-col">
         <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
@@ -23,6 +27,9 @@ const { data: vacunaciones } = await useAsyncData('vacunaciones', () => getVacun
                                     Vacuna
                                 </th>
                                 <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                    Laboratorio
+                                </th>
+                                <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
                                     DNI Ciudadano
                                 </th>
                                 <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
@@ -34,7 +41,7 @@ const { data: vacunaciones } = await useAsyncData('vacunaciones', () => getVacun
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="border-b" v-for="vacunacion in vacunaciones">
+                            <tr v-if="vacunaciones?.length" class="border-b" v-for="vacunacion in vacunaciones">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                     {{ vacunacion.envio_id.jurisdiccion_id.nombre }}
                                 </td>
@@ -43,6 +50,9 @@ const { data: vacunaciones } = await useAsyncData('vacunaciones', () => getVacun
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                     {{ vacunacion.envio_id.lote_id.vacuna_desarrollada_id.vacuna_id.nombre }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                    {{ vacunacion.envio_id.lote_id.vacuna_desarrollada_id.laboratorio_id.nombre }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                     {{ vacunacion.dni_vacunado }}
@@ -63,4 +73,6 @@ const { data: vacunaciones } = await useAsyncData('vacunaciones', () => getVacun
             </div>
         </div>
     </div>
+
+    <ErrorAlert v-if="error?.data" :error="error?.data.message" />
 </template>
