@@ -1,5 +1,4 @@
 import brie from "brie";
-import reglas from "./reglas.json";
 import { monthDiff, getEdad } from "~/helpers/dates";
 import { serverSupabaseClient } from "#supabase/server";
 
