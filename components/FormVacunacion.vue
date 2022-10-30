@@ -83,6 +83,7 @@ const registrarVacunacion = async () => {
   }
   try {
     let { data } = await $fetch('/api/vacunacion', { method: 'post', body: { vacunacion } })
+    alert('Vacunación registrada con éxito')
     emit("submit-vacunacion", data);
   } catch (e) {
     error.value = e
