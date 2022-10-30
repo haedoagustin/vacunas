@@ -1,18 +1,25 @@
 <script setup>
 const supabase = useSupabaseClient();
-
+const readableRoles = {
+  'admin': 'Administrador',
+  'operador nacional': 'Operador Nacional',
+  'analista provincial': 'Analista Provincial',
+  'vacunador': 'Vacunador'
+}
 const deleteUsuario = async (user_id) => {
-  let { data, error } = await useFetch("/api/user", {
-    method: "DELETE",
-    query: {
-      user_id,
-    },
-  });
+  try {
+    let data = await $fetch("/api/user", {
+      'method': 'delete',
+      query: {
+        user_id,
+      },
+    });
 
-  if (error.value) return alert(error.value.data.message);
-
-  alert("usuario eliminado con éxito");
-  loadUsuarios();
+    loadUsuarios();
+    alert("usuario eliminado con éxito");
+  } catch (e) {
+    alert('No se pudo eliminar el usuario')
+  }
 };
 
 let usuarios = ref([]);
@@ -95,7 +102,7 @@ loadUsuarios();
                 <td
                   class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
                 >
-                  {{ usuario.rol }}
+                  {{ readableRoles[usuario.rol] }}
                 </td>
                 <td
                   class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"

@@ -34,13 +34,13 @@ const submitForm = async () =>{
         formData.email = usuario.email.value
         formData.password = usuario.password.value
 
-        const { data, error } = await useFetch('/api/users', {
+        const { data, error } = await $fetch('/api/users', {
             'method': 'POST',
             body: formData
         })
-
-        emit("submit-usuario");
         loading.value = false;
+        alert('Usuario creado con éxito')
+        emit("submit-usuario", data);
     } catch (err) {
         console.log("Algo salio mal creando el usuario:", err);
     }

@@ -1,10 +1,10 @@
-# Nuxt 3 Minimal Starter
+# Vacunas
 
-Look at the [nuxt 3 documentation](https://v3.nuxtjs.org) to learn more.
+Gestión de vacunas y vacunaciones para el ámbito de Nación y Jurisdicciones.
 
-## Setup
+## Configuración del sistema
 
-Make sure to install the dependencies:
+Asegurate de instalar las dependencias:
 
 ```bash
 # yarn
@@ -15,45 +15,31 @@ npm install
 
 # pnpm
 pnpm install --shamefully-hoist
+
 ```
-## Supabase local development
 
-Documentation
+## Servidor de desarrollo
 
-https://supabase.com/docs/guides/cli/local-development
+Verificar que exista un archivo .env con las entradas que se encuentran en .env.example
 
-## Development Server
-
-Start the development server on http://localhost:3000
+Iniciar el servidor de desarrollo en http://localhost:3000
 
 ```bash
 npm run dev
 ```
 
-Apply unapplied migrations to local database
+## Despliegue en producción
 
-```bash
-supabase db diff -f <nombre>
-```
-
-Make migrations from local database
-
-```bash
-supabase db diff -f <nombre>
-```
-
-## Production
-
-Build the application for production:
+Construir la aplicación para producción:
 
 ```bash
 npm run build
 ```
 
-Locally preview production build:
+Previsualizar la construcción de producción localmente:
 
 ```bash
 npm run preview
 ```
 
-Checkout the [deployment documentation](https://v3.nuxtjs.org/guide/deploy/presets) for more information.
+Para más información consultar la [documentación de despliegue](https://v3.nuxtjs.org/guide/deploy/presets).

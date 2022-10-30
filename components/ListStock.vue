@@ -44,6 +44,7 @@ const loadCantidad = async () => {
     cantidadVacuna.value = envios
       .filter((envio) => {
         const lote = lotes.find((lote) => lote.id == envio.lote_id);
+        if (!lote) return false;
         const vacunaDesarrollada = vacunasDesarrolladas.find(
           (vac) => vac.id == lote.vacuna_desarrollada_id
         );
