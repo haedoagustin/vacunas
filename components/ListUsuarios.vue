@@ -1,6 +1,11 @@
 <script setup>
 const supabase = useSupabaseClient();
-
+const readableRoles = {
+  'admin': 'Administrador',
+  'operador nacional': 'Operador Nacional',
+  'analista provincial': 'Analista Provincial',
+  'vacunador': 'Vacunador'
+}
 const deleteUsuario = async (user_id) => {
   try {
     let data = await $fetch("/api/user", {
@@ -97,7 +102,7 @@ loadUsuarios();
                 <td
                   class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
                 >
-                  {{ usuario.rol }}
+                  {{ readableRoles[usuario.rol] }}
                 </td>
                 <td
                   class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
