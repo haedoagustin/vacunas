@@ -22,7 +22,7 @@ const formUsuarios = ref(false);
                 <h1 class="text-2xl font-extrabold dark:text-white">
                     Formulario de alta de usuario
                 </h1>
-                <FormUsuarios @submit-usuario="formUsuarios = true" />
+                <FormUsuarios @submit-usuario="formUsuarios = false" />
             </div>
             <div v-else class="flex flex-col content-center">
                 <div class="flex justify-between">

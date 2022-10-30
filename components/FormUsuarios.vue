@@ -39,7 +39,7 @@ const submitForm = async () =>{
             body: formData
         })
 
-        emit("submit-usuario");
+        emit("submit-usuario", data);
         loading.value = false;
     } catch (err) {
         console.log("Algo salio mal creando el usuario:", err);
