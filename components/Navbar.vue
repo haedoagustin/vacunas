@@ -15,7 +15,7 @@ import {
   BeakerIcon,
   CogIcon,
   Squares2X2Icon,
-  TruckIcon
+  TruckIcon,
 } from "@heroicons/vue/24/outline/index.js";
 import { ChevronDownIcon } from "@heroicons/vue/20/solid/index.js";
 

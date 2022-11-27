@@ -1,18 +1,25 @@
 <script lang="ts" setup>
 useHead({
-  title: "Vacunación"
-})
+  title: "Vacunación",
+});
 
-const usuario = await useUsuario()
+const usuario = await useUsuario();
 
-const canVacunar = computed(() => usuario.rol === 'vacunador')
+const canVacunar = computed(() => usuario.rol === "vacunador");
+
+const etl = async () => {
+  try {
+    await fetch("/api/etl", { method: "POST" });
+  } catch (err) {
+    console.log("ERROR GEENRANDO ETL: ", err);
+  }
+};
 
 const finalizarVacunacion = () => {
-  navigateTo('/');
-}
-
+  navigateTo("/");
+};
 </script>
-    
+
 <template>
   <NuxtLayout>
     <template #page-title> Vacunaciones </template>
@@ -29,6 +36,12 @@ const finalizarVacunacion = () => {
           <h1 class="text-2xl font-extrabold dark:text-white">
             Lista de vacunas aplicadas
           </h1>
+          <button
+            class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded"
+            @click="etl"
+          >
+            ETL
+          </button>
         </div>
         <ListVacunaciones />
       </div>
