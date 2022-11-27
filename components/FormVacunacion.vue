@@ -1,4 +1,5 @@
 <script setup>
+import { toIsoString } from '../helpers/dates'
 const emit = defineEmits(['submit-vacunacion'])
 
 const usuario = await useUsuario()
@@ -76,17 +77,19 @@ watch(envio, async () => {
 
 const registrarVacunacion = async () => {
   error.value = null;
+
   let vacunacion = {
     vacunador: usuario.id,
     dni_vacunado: ciudadano.value?.DNI,
+    fecha_nacimiento_vacunado: toIsoString(ciudadano.value?.fecha_hora_nacimiento),
     envio_id: envio.value?.id
   }
   try {
-    let { data } = await $fetch('/api/vacunacion', { method: 'post', body: { vacunacion } })
+    let { data } = await $fetch('/api/vacunacion', { method: 'post', body: { vacunacion, jurisdiccion_id: usuario.jurisdiccion.id } })
     alert('Vacunación registrada con éxito')
     emit("submit-vacunacion", data);
-  } catch (e) {
-    error.value = e
+  } catch ({ data: err }) {
+    error.value = err.message
   }
 }
 </script>
