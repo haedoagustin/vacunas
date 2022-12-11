@@ -194,6 +194,7 @@ export default eventHandler(async (event) => {
   const { data: envios } = await client.from("envios").select(`
           * ,
             jurisdiccion_id (
+              id,
               nombre
             ),
             lote_id (
