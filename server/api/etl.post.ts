@@ -194,7 +194,6 @@ export default eventHandler(async (event) => {
   const { data: envios } = await client.from("envios").select(`
           * ,
             jurisdiccion_id (
-              id,
               nombre
             ),
             lote_id (
@@ -245,7 +244,6 @@ export default eventHandler(async (event) => {
       id_tiempo: tiempo.id,
       id_vacuna: d_vacuna_envios[i].id,
       jurisdiccion: envios[i].jurisdiccion_id.nombre,
-      jurisdiccion_id: envios[i].jurisdiccion_id.id,
       cantidad_vencidas: envios[i].lote_id.vencido
         ? envios[i].cantidad_disponible
         : 0,
@@ -253,7 +251,7 @@ export default eventHandler(async (event) => {
       cantidad_usadas: envios[i].cantidad - envios[i].cantidad_disponible,
     };
   });
-
+  console.log(arrHechosEnvios)
   await dataWarehouse.from("h_envios").insert(arrHechosEnvios);
 
   return {
