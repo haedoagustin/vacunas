@@ -244,7 +244,7 @@ export default eventHandler(async (event) => {
       id_tiempo: tiempo.id,
       id_vacuna: d_vacuna_envios[i].id,
       jurisdiccion: envios[i].jurisdiccion_id.nombre,
-      jurisdiccion_id: envios[i].jurisdiccion_id,
+      jurisdiccion_id: envios[i].jurisdiccion_id.id,
       cantidad_vencidas: envios[i].lote_id.vencido
         ? envios[i].cantidad_disponible
         : 0,
