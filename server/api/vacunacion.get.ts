@@ -10,9 +10,6 @@ export default defineEventHandler(async (event) => {
           nombre
         ),
         envio_id (
-          jurisdiccion_id (
-            nombre
-          ),
           lote_id (
             vacuna_desarrollada_id (
               vacuna_id (
@@ -22,6 +19,12 @@ export default defineEventHandler(async (event) => {
                 nombre
               )
             )
+          )
+        ),
+        id_departamento (
+          nombre,
+          jurisdiccion_id (
+            nombre
           )
         ),
         created_at,
