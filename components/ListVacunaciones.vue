@@ -21,6 +21,9 @@ const { data: vacunaciones, pending, error } = await useAsyncData('vacunaciones'
                                     Jurisdicción
                                 </th>
                                 <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                    Departamento
+                                </th>
+                                <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
                                     Vacunador
                                 </th>
                                 <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
@@ -42,8 +45,11 @@ const { data: vacunaciones, pending, error } = await useAsyncData('vacunaciones'
                         </thead>
                         <tbody>
                             <tr v-if="vacunaciones?.length" class="border-b" v-for="vacunacion in vacunaciones">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                    {{ vacunacion.envio_id.jurisdiccion_id.nombre }}
+                                <td class="px-6 py-4 text-ellipsis overflow-hidden whitespace-nowrap text-sm font-medium text-gray-900">
+                                    {{ vacunacion.id_departamento.jurisdiccion_id.nombre }}
+                                </td>
+                                <td class="px-6 py-4 text-ellipsis overflow-hidden whitespace-nowrap text-sm font-medium text-gray-900">
+                                    {{ vacunacion.id_departamento.nombre }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                     {{ vacunacion.vacunador.apellido }} {{ vacunacion.vacunador.nombre }}
