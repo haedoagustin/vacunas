@@ -190,6 +190,70 @@ export default eventHandler(async (event) => {
 
   console.log("-- Terminado el ETL de vencidas --");
 
+  // etl de h_envios
+  const { data: envios } = await client.from("envios").select(`
+          * ,
+            jurisdiccion_id (
+              nombre
+            ),
+            lote_id (
+              *,
+              vacuna_desarrollada_id (
+                vacuna_id (
+                  *
+                ),
+                laboratorio_id (
+                  *
+                )
+              )     
+            )
+   
+          `);
+
+  // ETL de d_vacuna
+  const arrDvacunaEnvios = envios.map((envio) => {
+    return {
+      nombre: envio.lote_id.vacuna_desarrollada_id.vacuna_id.nombre,
+      laboratorio: envio.lote_id.vacuna_desarrollada_id.laboratorio_id.nombre,
+      tipo_vacuna: envio.lote_id.vacuna_desarrollada_id.tipo || "arnm",
+    };
+  });
+
+  // ETL de d_tiempo
+  const arrDtiempoEnvios = envios.map((envio) => {
+    return {
+      año: envio.created_at.split("-")[0],
+      mes: envio.created_at.split("-")[1],
+      dia: envio.created_at.split("T")[0].split("-")[2],
+    };
+  });
+
+  const { data: d_tiempo_envios, error } = await dataWarehouse
+    .from("d_tiempo")
+    .insert(arrDtiempoEnvios)
+    .select();
+  const { data: d_vacuna_envios } = await dataWarehouse
+    .from("d_vacuna")
+    .insert(arrDvacunaEnvios)
+    .select();
+
+  // console.log(error, d_tiempo_envios);
+  // ETL de h_envios
+  const arrHechosEnvios = d_tiempo_envios.map((tiempo, i) => {
+    return {
+      id_tiempo: tiempo.id,
+      id_vacuna: d_vacuna_envios[i].id,
+      jurisdiccion: envios[i].jurisdiccion_id.nombre,
+      cantidad_vencidas: envios[i].lote_id.vencido
+        ? envios[i].cantidad_disponible
+        : 0,
+      cantidad_enviadas: envios[i].cantidad,
+      cantidad_usadas: envios[i].cantidad - envios[i].cantidad_disponible,
+    };
+  });
+  console.log(arrHechosEnvios)
+  await dataWarehouse.from("h_envios").insert(arrHechosEnvios);
+
   return {
     status: "ok",
   };
