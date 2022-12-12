@@ -8,7 +8,7 @@ export default eventHandler(async (event) => {
     process.env.SUPABASE_DATAWAREHOUSE_KEY
   );
 
-  const { data: vacunaciones } = await client.from("vacunaciones").select(`
+  let { data: vacunaciones } = await client.from("vacunaciones").select(`
           * ,
           envio_id (
             jurisdiccion_id (
