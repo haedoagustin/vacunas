@@ -5,13 +5,19 @@ useHead({
 
 const usuario = await useUsuario();
 
+const pending = ref(false)
+
 const canVacunar = computed(() => usuario.rol === "vacunador");
 
 const etl = async () => {
+  pending.value = true
   try {
-    await fetch("/api/etl", { method: "POST" });
+    let { response } = await $fetch("/api/etl", { method: "POST" });
+    pending.value = false
+    alert(response)
   } catch (err) {
-    console.log("ERROR GEENRANDO ETL: ", err);
+    pending.value = false
+    alert("ERROR GEENRANDO ETL: " + err);
   }
 };
 
@@ -36,10 +42,10 @@ const finalizarVacunacion = () => {
           <h1 class="text-2xl font-extrabold dark:text-white">
             Lista de vacunas aplicadas
           </h1>
-          <button
-            class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded"
-            @click="etl"
-          >
+
+          <Loading v-if="pending" />
+
+          <button class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded" @click="etl">
             ETL
           </button>
         </div>

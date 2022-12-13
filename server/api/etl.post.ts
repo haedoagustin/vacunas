@@ -114,7 +114,7 @@ export default eventHandler(async (event) => {
 
   await dataWarehouse.from("h_vacunados").insert(arrHechos);
 
-  console.log("-- Terminado el ETL de vacunados --");
+  // console.log("-- Terminado el ETL de vacunados --");
 
   // ETL de h_vencidas
   let { data: vencidas } = await client.from("envios").select(`
@@ -188,7 +188,7 @@ export default eventHandler(async (event) => {
 
   await dataWarehouse.from("h_vencidas").insert(arrHechosVencidas);
 
-  console.log("-- Terminado el ETL de vencidas --");
+  // console.log("-- Terminado el ETL de vencidas --");
 
   // etl de h_envios
   const { data: envios } = await client.from("envios").select(`
@@ -251,10 +251,9 @@ export default eventHandler(async (event) => {
       cantidad_usadas: envios[i].cantidad - envios[i].cantidad_disponible,
     };
   });
-  console.log(arrHechosEnvios)
   await dataWarehouse.from("h_envios").insert(arrHechosEnvios);
 
   return {
-    status: "ok",
+    response: "Se actualizaron los datos de la aplicación",
   };
 });
