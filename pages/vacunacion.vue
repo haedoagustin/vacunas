@@ -5,17 +5,18 @@ useHead({
 
 const usuario = await useUsuario();
 
+const pending = ref(false)
+
 const canVacunar = computed(() => usuario.rol === "vacunador");
-const loading = ref(false);
 const etl = async () => {
-  if (loading.value) return;
+  pending.value = true
   try {
-    loading.value = true;
-    await fetch("/api/etl", { method: "POST" });
-    loading.value = false;
+    let { response } = await $fetch("/api/etl", { method: "POST" });
+    pending.value = false
+    alert(response)
   } catch (err) {
-    console.log("ERROR GEENRANDO ETL: ", err);
-    loading.value = false;
+    pending.value = false
+    alert("ERROR GEENRANDO ETL: " + err);
   }
 };
 
@@ -40,18 +41,11 @@ const finalizarVacunacion = () => {
           <h1 class="text-2xl font-extrabold dark:text-white">
             Lista de vacunas aplicadas
           </h1>
-          <button
-            class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded"
-            @click="etl"
-          >
-            <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-              <LoadingSpin
-                v-if="loading"
-                class="animate-spin h-5 w-5 text-blue-500 group-hover:text-blue-400"
-                aria-hidden="true"
-              />
-            </span>
-            <p v-if="!loading">ETL</p>
+
+          <Loading v-if="pending" />
+
+          <button class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded" @click="etl">
+            ETL
           </button>
         </div>
         <ListVacunaciones />
