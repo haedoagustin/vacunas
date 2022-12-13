@@ -8,7 +8,6 @@ const usuario = await useUsuario();
 const pending = ref(false)
 
 const canVacunar = computed(() => usuario.rol === "vacunador");
-
 const etl = async () => {
   pending.value = true
   try {

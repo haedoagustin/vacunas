@@ -8,7 +8,7 @@ export default eventHandler(async (event) => {
     process.env.SUPABASE_DATAWAREHOUSE_KEY
   );
 
-  const { data: vacunaciones } = await client.from("vacunaciones").select(`
+  let { data: vacunaciones } = await client.from("vacunaciones").select(`
           * ,
           envio_id (
             jurisdiccion_id (
@@ -33,12 +33,13 @@ export default eventHandler(async (event) => {
           dni_vacunado`);
 
   // limpiamos el datawarehouse para hacer pruebas
-  // await dataWarehouse.from("h_vencidas").delete().neq("id", 0);
-  // await dataWarehouse.from("h_vacunados").delete().neq("id", 0);
-  // await dataWarehouse.from("d_lugar").delete().neq("id", 0);
-  // await dataWarehouse.from("d_tiempo").delete().neq("id", 0);
-  // await dataWarehouse.from("d_vacuna").delete().neq("id", 0);
-  // await dataWarehouse.from("d_vacunado").delete().neq("id", 0);
+  await dataWarehouse.from("h_vencidas").delete().neq("id", 0);
+  await dataWarehouse.from("h_vacunados").delete().neq("id", 0);
+  await dataWarehouse.from("d_lugar").delete().neq("id", 0);
+  await dataWarehouse.from("d_tiempo").delete().neq("id", 0);
+  await dataWarehouse.from("d_vacuna").delete().neq("id", 0);
+  await dataWarehouse.from("d_vacunado").delete().neq("id", 0);
+  await dataWarehouse.from("h_envios").delete().neq("id", 0);
 
   // ETL de d_lugar
   const arrDlugar = vacunaciones.map((vacunacion) => {
