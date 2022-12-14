@@ -60,6 +60,12 @@ const deleteVacuna = async (id) => {
                   scope="col"
                   class="text-sm font-medium text-gray-900 px-6 py-4 text-left"
                 >
+                  Tipo de desarrollo
+                </th>
+                <th
+                  scope="col"
+                  class="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                >
                   Precio
                 </th>
                 <th
@@ -98,6 +104,11 @@ const deleteVacuna = async (id) => {
                   class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
                 >
                   {{ vacuna.laboratorio_id }}
+                </td>
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                >
+                  {{ vacuna.tipo }}
                 </td>
                 <td
                   class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
