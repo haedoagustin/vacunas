@@ -4,12 +4,10 @@ export default defineEventHandler(async (event) => {
   const client = serverSupabaseClient(event);
 
   const { jurisdiccion, mes, vacuna, laboratorio } = await readBody(event);
-  console.log(process.env.SUPABASE_KEY);
-  console.log(event.req.headers.authorization.replace("Bearer ", ""));
   if (
     !(
       process.env.SUPABASE_KEY ==
-      event.req.headers.authorization.replace("Bearer ", "")
+      event.req.headers.authorization?.replace("Bearer ", "")
     )
   )
     return "Las crendenciales no son correctas";
