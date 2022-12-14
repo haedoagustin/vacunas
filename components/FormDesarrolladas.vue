@@ -6,12 +6,15 @@ let vacunas = ref([]);
 let laboratorios = ref([]);
 let loading = ref(false);
 
+let tipos_desarrollo = ['arnm', 'vector_viral', 'subunidades_proteicas']
+
 const vacunaDesarrollada = {
   idVacuna: ref(-1),
   idLaboratorio: ref(""),
   precio: ref(0),
   vidaUtil: ref(0),
   tiempoEntrega: ref(0),
+  tipo: ref("")
 };
 
 const load = async () => {
@@ -39,6 +42,7 @@ const submitVacuna = async () => {
   row.precio = vacunaDesarrollada.precio.value;
   row.vida_util = vacunaDesarrollada.vidaUtil.value;
   row.tiempo_entrega = vacunaDesarrollada.tiempoEntrega.value;
+  row.tipo = vacunaDesarrollada.tipo.value;
 
   console.log(row);
   try {
@@ -99,6 +103,26 @@ load();
         >
           <option v-for="laboratorio in laboratorios">
             {{ laboratorio.nombre }}
+          </option>
+        </select>
+      </div>
+      <div class="mb-4 shadow-md">
+        <label
+          class="block text-gray-700 text-sm font-bold mb-2"
+          for="laboratorio"
+        >
+          Tipo de desarrollo de vacuna
+        </label>
+        <select
+          class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          type="text"
+          placeholder="laboratorio"
+          id="laboratorio"
+          required
+          v-model="vacunaDesarrollada.tipo.value"
+        >
+          <option v-for="tipo in tipos_desarrollo">
+            {{ tipo }}
           </option>
         </select>
       </div>
