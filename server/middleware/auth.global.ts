@@ -30,7 +30,15 @@ async function canAccessUrl(event, user) {
 export default defineEventHandler(async (event) => {
   let to = event.req.url;
 
-  if (!["/login", "/confirm", "/api/_supabase/session"].includes(to)) {
+  if (
+    ![
+      "/login",
+      "/confirm",
+      "/api/_supabase/session",
+      "/api/login",
+      "/api/cant-vacunados",
+    ].includes(to)
+  ) {
     let user = await serverSupabaseUser(event);
     let client = serverSupabaseServiceRole(event);
 
