@@ -143,7 +143,7 @@ export default eventHandler(async (event) => {
   const arrDlugarVencidas = vencidas.map((vencida) => {
     return {
       jurisdiccion: vencida.jurisdiccion_id.nombre,
-      departamento: vencida.jurisdiccion_id.nombre,
+      departamento: "Sin departamento",
     };
   });
 
