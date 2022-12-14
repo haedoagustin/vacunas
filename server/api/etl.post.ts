@@ -11,9 +11,6 @@ export default eventHandler(async (event) => {
   let { data: vacunaciones } = await client.from("vacunaciones").select(`
           * ,
           envio_id (
-            jurisdiccion_id (
-              nombre
-            ),
             lote_id (
               vacuna_desarrollada_id (
                 vacuna_id (
@@ -27,7 +24,10 @@ export default eventHandler(async (event) => {
             )
           ),
           id_departamento (
-              nombre
+              nombre,
+              jurisdiccion_id (
+                nombre
+              )
           ),
           created_at,
           dni_vacunado`);
@@ -44,7 +44,7 @@ export default eventHandler(async (event) => {
   // ETL de d_lugar
   const arrDlugar = vacunaciones.map((vacunacion) => {
     return {
-      jurisdiccion: vacunacion.envio_id.jurisdiccion_id.nombre,
+      jurisdiccion: vacunacion.id_departamento.jurisdiccion_id.nombre,
       departamento: vacunacion.id_departamento.nombre,
     };
   });
