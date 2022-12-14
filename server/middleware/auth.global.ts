@@ -37,7 +37,8 @@ export default defineEventHandler(async (event) => {
       "/api/_supabase/session",
       "/api/login",
       "/api/cant-vacunados",
-    ].includes(to)
+    ].includes(to) &&
+    !to.includes("/api/cant-vacunados")
   ) {
     let user = await serverSupabaseUser(event);
     let client = serverSupabaseServiceRole(event);

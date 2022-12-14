@@ -3,7 +3,7 @@ import { serverSupabaseClient } from "#supabase/server";
 export default defineEventHandler(async (event) => {
   const client = serverSupabaseClient(event);
 
-  const { jurisdiccion, mes, vacuna, laboratorio } = await readBody(event);
+  const { jurisdiccion, mes, vacuna, laboratorio } = await useQuery(event);
   if (
     !(
       process.env.SUPABASE_KEY ==
